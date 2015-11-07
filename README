@@ -1,0 +1,3 @@
+This is a template for writing financial agent-based models in python. It uses abstract base classes and is implemented in http://github.com/cogeorg/abmsample/ .
+
+co-pierre.georg@uct.ac.za, 2015
