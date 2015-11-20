@@ -235,7 +235,7 @@ class Goodness(object):
                 self.out_low[x] = min([sublist[x] for sublist in self.out_gotten])
         for y in range(0, len(out_high)):
             if self.out_high[y] == "inf":
-                self.out_high[y] = max([sublist[x] for sublist in self.out_gotten])
+                self.out_high[y] = max([sublist[y] for sublist in self.out_gotten])
 
     # Main loop, reads config, reads the samples, and calculates the goodness
     def do_run(self, config_name):
