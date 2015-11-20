@@ -65,6 +65,7 @@ class Goodness(object):
         <config identifier="test">
             <parameter type="output" kind="float" column="2" low="0.0" high="4.0" target="2.0"></parameter>
             <parameter type="output" kind="float" column="1" low="0.0" high="4.0" target="2.0"></parameter>
+            <parameter type="output" kind="comp" column="3-2" low="0.0" high="4.0" target="0.0"></parameter>
             <parameter type="distance" kind="euclid"></parameter>
             <parameter type="folder" name="samples\\goodness" headers="yes"></parameter>
         </config>
@@ -73,6 +74,15 @@ class Goodness(object):
         minima, maxima, and the hypothesis value
 
         If minima and maxima are to be read from samples, then put "-inf" for low parameter and "inf" for high
+
+        !!!
+        Other hypothesis different than x0=a we may also check if x0>=x1 (one output is bigger than other)
+        To do that use output with kind "comp", in column put "a-b" where a and b are integers representing
+        column numbers for a hypothesis a>=b, always keep low="0.0" and target="0.0" for this hypothesis
+        For high use any positive real number, if there is only this one hypothesis this is irrelevant
+        If there are other hypothesis being tested this constitutes the weight with retards to other
+        hypotheses, where weights of others are proportional to the (high-low) values.
+        !!!
 
         """
 
@@ -132,6 +142,12 @@ class Goodness(object):
                     else:
                         out_high.append(float(subelement.attrib['high']))
                     out_target.append(float(subelement.attrib['target']))
+                elif (subelement.attrib['kind'] == 'comp'):
+                    out_type.append("comp")
+                    out_column.append(subelement.attrib['column'])
+                    out_low.append(float(subelement.attrib['low']))
+                    out_high.append(float(subelement.attrib['high']))
+                    out_target.append(float(subelement.attrib['target']))
                 else:
                     print("Error reading config file.")
             elif (subelement.attrib['type'] == 'distance'):
@@ -176,7 +192,6 @@ class Goodness(object):
             csvDialect = self.getDialect(f)
             f.seek(0)
             csvReader = csv.reader(f, dialect=csvDialect)
-            print self.folder_name
             if headers == "yes":
                 next(csvReader, None)
             outp = []
@@ -194,14 +209,22 @@ class Goodness(object):
                 temp_out_two = []
                 for iterator in out_column:
                     temp_column = 0
-                    try:
-                        temp_column = self.out_column.index(iterator)
-                        if self.out_type[temp_column] == "int":
-                            temp_out_two.append(int(row[iterator-1]))
+                    if type(iterator) == str:
+                        temp_three = 0.0
+                        if (float(row[int(iterator.split("-")[0])-1]) - float(row[int(iterator.split("-")[1])-1])) >= 0:
+                            temp_three = 0.0
                         else:
+                            temp_three = self.out_high[out_column.index(iterator)]
+                        temp_out_two.append(temp_three)
+                    elif type(iterator) == int:
+                        try:
+                            temp_column = self.out_column.index(iterator)
+                            if self.out_type[temp_column] == "int":
+                                temp_out_two.append(int(row[iterator-1]))
+                            else:
+                                temp_out_two.append(float(row[iterator-1]))
+                        except:
                             temp_out_two.append(float(row[iterator-1]))
-                    except:
-                        temp_out_two.append(float(row[iterator-1]))
                 self.out_gotten.append(temp_out_two)
         os.chdir(temp_folder)  # This is to get working directory in order at the end of the function
 
@@ -210,13 +233,9 @@ class Goodness(object):
         for x in range(0, len(out_low)):
             if self.out_low[x] == "-inf":
                 self.out_low[x] = min([sublist[x] for sublist in self.out_gotten])
-                print self.out_low[x]
         for y in range(0, len(out_high)):
             if self.out_high[y] == "inf":
                 self.out_high[y] = max([sublist[x] for sublist in self.out_gotten])
-                print self.out_high[y]
-
-
 
     # Main loop, reads config, reads the samples, and calculates the goodness
     def do_run(self, config_name):
