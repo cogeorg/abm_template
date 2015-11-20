@@ -81,7 +81,7 @@ class Goodness(object):
         column numbers for a hypothesis a>=b, always keep low="0.0" and target="0.0" for this hypothesis
         For high use any positive real number, if there is only this one hypothesis this is irrelevant
         If there are other hypothesis being tested this constitutes the weight with retards to other
-        hypotheses, where weights of others are proportional to the (high-low) values.
+        hypotheses, where weights of others are proportional to the max{(high-target),(target-low)} values.
         !!!
 
         """
