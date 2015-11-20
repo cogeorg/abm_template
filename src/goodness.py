@@ -72,6 +72,8 @@ class Goodness(object):
         type output is the parameter space, kind can be integer or float, followed by column in the csv files
         minima, maxima, and the hypothesis value
 
+        If minima and maxima are to be read from samples, then put "-inf" for low parameter and "inf" for high
+
         """
 
         # Make the variables global, as we use them outside the function
@@ -109,14 +111,26 @@ class Goodness(object):
                 if (subelement.attrib['kind'] == 'integer'):
                     out_type.append("int")
                     out_column.append(int(subelement.attrib['column']))
-                    out_low.append(int(subelement.attrib['low']))
-                    out_high.append(int(subelement.attrib['high']))
+                    if subelement.attrib['low'] == "-inf":
+                        out_low.append("-inf")
+                    else:
+                        out_low.append(int(subelement.attrib['low']))
+                    if subelement.attrib['high'] == "inf":
+                        out_high.append("inf")
+                    else:
+                        out_high.append(int(subelement.attrib['high']))
                     out_target.append(int(subelement.attrib['target']))
                 elif (subelement.attrib['kind'] == 'float'):
                     out_type.append("float")
                     out_column.append(int(subelement.attrib['column']))
-                    out_low.append(float(subelement.attrib['low']))
-                    out_high.append(float(subelement.attrib['high']))
+                    if subelement.attrib['low'] == "-inf":
+                        out_low.append("-inf")
+                    else:
+                        out_low.append(float(subelement.attrib['low']))
+                    if subelement.attrib['high'] == "inf":
+                        out_high.append("inf")
+                    else:
+                        out_high.append(float(subelement.attrib['high']))
                     out_target.append(float(subelement.attrib['target']))
                 else:
                     print("Error reading config file.")
@@ -175,18 +189,40 @@ class Goodness(object):
         temp_folder = os.getcwd()  # This is to get working directory in order at the end of the function
         os.chdir(folder_name)
         for filez in glob.glob("*.csv"):
-            temp_out = self.read_output_mult(filez)        
+            temp_out = self.read_output_mult(filez)
             for row in temp_out:
                 temp_out_two = []
-                for iterator in out_column:                
-                    temp_out_two.append(row[iterator-1])
+                for iterator in out_column:
+                    temp_column = 0
+                    try:
+                        temp_column = self.out_column.index(iterator)
+                        if self.out_type[temp_column] == "int":
+                            temp_out_two.append(int(row[iterator-1]))
+                        else:
+                            temp_out_two.append(float(row[iterator-1]))
+                    except:
+                        temp_out_two.append(float(row[iterator-1]))
                 self.out_gotten.append(temp_out_two)
         os.chdir(temp_folder)  # This is to get working directory in order at the end of the function
+
+    # Check if maxima and minima are to be read from the config or from data
+    def check_min_max(self):
+        for x in range(0, len(out_low)):
+            if self.out_low[x] == "-inf":
+                self.out_low[x] = min([sublist[x] for sublist in self.out_gotten])
+                print self.out_low[x]
+        for y in range(0, len(out_high)):
+            if self.out_high[y] == "inf":
+                self.out_high[y] = max([sublist[x] for sublist in self.out_gotten])
+                print self.out_high[y]
+
+
 
     # Main loop, reads config, reads the samples, and calculates the goodness
     def do_run(self, config_name):
         self.read_config(str(config_name))
         self.read_directory()
+        self.check_min_max()
         self.calculate_goodness()
 
     def calculate_goodness(self):
