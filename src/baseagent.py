@@ -170,6 +170,24 @@ class BaseAgent(object):
         else:
             return False
 
+    @abc.abstractmethod
+    def get_parameters_from_file(self, _filename, _environment):
+        from xml.etree import ElementTree
+
+        try:
+            xmlText = open(_filename).read()
+            element = ElementTree.XML(xmlText)
+            self.identifier = element.attrib['identifier']
+
+            # loop over all entries in the xml file
+            for subelement in element:
+                name = subelement.attrib['name']
+                value = subelement.attrib['value']
+                self.parameters[name] = float(value)
+
+        except:
+            logging.error("    ERROR: %s could not be parsed",  _filename)
+
     #@abc.abstractmethod
     #def get_best_response(self, opponent_strategy):
     #    pass
