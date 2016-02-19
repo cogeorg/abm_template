@@ -49,6 +49,14 @@ class BaseAgent(object):
     parameters = abc.abstractproperty(get_parameters, set_parameters)
 
     @abc.abstractmethod
+    def append_parameters(self, _params):
+        if not isinstance(_variables, dict):
+            raise TypeError
+        else:
+            self.parameters.update(_params)
+        return
+
+    @abc.abstractmethod
     def get_state_variables(self):
         return
     @abc.abstractmethod
@@ -64,6 +72,13 @@ class BaseAgent(object):
         return
     state_variables = abc.abstractproperty(get_state_variables, set_state_variables)
 
+    @abc.abstractmethod
+    def append_state_variables(self, _variables):
+        if not isinstance(_variables, dict):
+            raise TypeError
+        else:
+            self.state_variables.update(_variables)
+        return
 
     @abc.abstractmethod
     def __init__(self, _identifier, _params, _variables):
