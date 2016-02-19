@@ -116,6 +116,44 @@ class BaseAgent(object):
 
         return ret_str
 
+    @abc.abstractproperty
+    def accounts(self):
+        pass
+
+    @abc.abstractmethod
+    def get_account(self, _type):
+        volume = 0.0
+
+        for transaction in self.accounts:
+            if (transaction.transactionType == _type):
+                volume = volume + float(transaction.transactionValue)
+
+        return volume
+
+    @abc.abstractmethod
+    def get_account_num_transactions(self, _type):
+        num_transactions = 0.0
+
+        for transaction in self.accounts:
+            if (transaction.transactionType == _type):
+                num_transactions += 1
+
+        return num_transactions
+
+    @abc.abstractmethod
+    def clear_accounts(self):
+        self.accounts = []
+
+    @abc.abstractmethod
+    def purge_accounts(self):
+        new_accounts = []
+
+        for transaction in self.accounts:
+            if transaction.transactionValue > 0.0:
+                new_accounts.append(transaction)
+
+        self.accounts = new_accounts
+
     #@abc.abstractmethod
     #def get_best_response(self, opponent_strategy):
     #    pass
