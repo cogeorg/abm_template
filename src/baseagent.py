@@ -154,6 +154,22 @@ class BaseAgent(object):
 
         self.accounts = new_accounts
 
+    @abc.abstractmethod
+    def check_consistency(self, _assets, _liabilities):
+        assets = 0.0
+        liabilities = 0.0
+
+        for transaction in self.accounts:
+            if transaction.transactionType in _assets:
+                assets = assets + transaction.transactionValue
+            if transaction.transactionType in _liabilities:
+                liabilities = liabilities + transaction.transactionValue
+
+        if assets == liabilities:
+            return True
+        else:
+            return False
+
     #@abc.abstractmethod
     #def get_best_response(self, opponent_strategy):
     #    pass
