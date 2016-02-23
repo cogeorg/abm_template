@@ -33,6 +33,8 @@ class BaseTransaction(object):
             self.type_ = _type
         return
     type_ = abc.abstractproperty(get_type_, set_type_)
+    # type of transactions, e.g. "deposit"
+    # trailing underscore to distinguish from python keyword
 
     @abc.abstractmethod
     def get_asset(self):
@@ -49,6 +51,7 @@ class BaseTransaction(object):
             self.asset = _asset
         return
     asset = abc.abstractproperty(get_asset, set_asset)
+    # type of asset, used for investment types
 
     @abc.abstractmethod
     def get_from_(self):
@@ -62,6 +65,8 @@ class BaseTransaction(object):
         self.transaction_from_ = _from
         return
     from_ = abc.abstractproperty(get_from_, set_from_)
+    # agent being the originator of the transaction
+    # trailing underscore to distinguish from python keyword
 
     @abc.abstractmethod
     def get_to(self):
@@ -75,6 +80,7 @@ class BaseTransaction(object):
         self.to = _to
         return
     to = abc.abstractproperty(get_to, set_to)
+    # agent being the recipient of the transaction
 
     @abc.abstractmethod
     def get_value(self):
@@ -91,6 +97,7 @@ class BaseTransaction(object):
             self.value = float(_value)
         return
     value = abc.abstractproperty(get_value, set_value)
+    # value of the transaction
 
     @abc.abstractmethod
     def get_interest(self):
@@ -107,6 +114,7 @@ class BaseTransaction(object):
             self.interest = float(_interest)
         return
     interest = abc.abstractproperty(get_interest, set_interest)
+    # interest rate paid to the originator each time step
 
     @abc.abstractmethod
     def get_maturity(self):
@@ -123,6 +131,7 @@ class BaseTransaction(object):
             self.maturity = int(_maturity)
         return
     maturity = abc.abstractproperty(get_maturity, set_maturity)
+    # time (in steps) to maturity
 
     @abc.abstractmethod
     def get_time_of_default(self):
@@ -139,6 +148,7 @@ class BaseTransaction(object):
             self.time_of_default = int(_time_of_default)
         return
     time_of_default = abc.abstractproperty(get_time_of_default, set_time_of_default)
+    # control variable checking for defaulted transactions
 
     @abc.abstractmethod
     def this_transaction(self, type_, asset, from_, to, value, interest, maturity, time_of_default):
@@ -157,6 +167,7 @@ class BaseTransaction(object):
         self.interest = interest
         self.maturity = maturity
         self.time_of_default = time_of_default
+    # a standard function which sets the variables of the transaction to the given values
 
     @abc.abstractmethod
     def print_transaction(self):
@@ -176,6 +187,7 @@ class BaseTransaction(object):
         print "            <property type='maturity' value='" + str(self.maturity) + "'></property>"
         print "            <property type='time_of_default' value='" + str(self.time_of_default) + "'></property>"
         print "        </transaction>"
+    # a standard function which prints the transaction and its properties
 
     @abc.abstractmethod
     def write_transaction(self):
@@ -197,3 +209,4 @@ class BaseTransaction(object):
         text += "        </transaction>\n"
 
         return text
+    # a standard function which returns a string with the transaction and its properties

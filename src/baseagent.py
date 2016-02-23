@@ -31,6 +31,8 @@ class BaseAgent(object):
             self.identifier = _identifier
         return
     identifier = abc.abstractproperty(get_identifier, set_identifier)
+    # identifier of the specific agent used for distinguishing agents
+    # identifier should be a string
 
     @abc.abstractmethod
     def get_parameters(self):
@@ -47,6 +49,9 @@ class BaseAgent(object):
             self.parameters = _params
         return
     parameters = abc.abstractproperty(get_parameters, set_parameters)
+    # parameters of the agents, store values determining
+    # the behaviour of a given agent
+    # parameters should be a dictionary
 
     @abc.abstractmethod
     def append_parameters(self, _params):
@@ -55,6 +60,8 @@ class BaseAgent(object):
         else:
             self.parameters.update(_params)
         return
+    # a standard method for adding a parameter
+    # without destroying previously set ones
 
     @abc.abstractmethod
     def get_state_variables(self):
@@ -71,6 +78,10 @@ class BaseAgent(object):
             self.state_variables = _variables
         return
     state_variables = abc.abstractproperty(get_state_variables, set_state_variables)
+    # state variables of the agents, store values determining
+    # the behaviour of a given agent that are bound to change
+    # during the simulation
+    # state variables should be a dictionary
 
     @abc.abstractmethod
     def append_state_variables(self, _variables):
@@ -79,6 +90,8 @@ class BaseAgent(object):
         else:
             self.state_variables.update(_variables)
         return
+    # a standard method for adding a state variable
+    # without destroying previously set ones
 
     @abc.abstractmethod
     def __init__(self, _identifier, _params, _variables):
@@ -89,6 +102,7 @@ class BaseAgent(object):
         self.set_identifier(_identifier)
         self.parameters = _params
         self.state_variables = _variables
+    # a standard method for initialisation of an agent
 
     @abc.abstractmethod
     def __str__(self):
@@ -115,10 +129,13 @@ class BaseAgent(object):
         ret_str += "  </agent>\n"
 
         return ret_str
+    # a standard method for writing a file with
+    # all of the agent's variable in a xml styled string
 
     @abc.abstractproperty
     def accounts(self):
         pass
+    # accounts of the agent, used to store transactions between agents
 
     @abc.abstractmethod
     def get_account(self, _type):
@@ -129,6 +146,8 @@ class BaseAgent(object):
                 volume = volume + float(transaction.value)
 
         return volume
+    # a standard function returning the value of all transactions
+    # of a given type held by the agent
 
     @abc.abstractmethod
     def get_account_num_transactions(self, _type):
@@ -139,10 +158,13 @@ class BaseAgent(object):
                 num_transactions += 1
 
         return num_transactions
+    # a standard function returning the number of all transactions
+    # of a given type held by the agent
 
     @abc.abstractmethod
     def clear_accounts(self):
         self.accounts = []
+    # a standard function deleting all transactions of the agent
 
     @abc.abstractmethod
     def purge_accounts(self):
@@ -153,6 +175,7 @@ class BaseAgent(object):
                 new_accounts.append(transaction)
 
         self.accounts = new_accounts
+    # a standard function deleting all worthless transactions of the agent
 
     @abc.abstractmethod
     def check_consistency(self, _assets, _liabilities):
@@ -169,6 +192,10 @@ class BaseAgent(object):
             return True
         else:
             return False
+    # a standard function determining whether value of all assets
+    # and liabilities of the agent are equal
+    # types of transactions which constitute aseets and liabilities
+    # are given as lists
 
     @abc.abstractmethod
     def get_parameters_from_file(self, _filename, _environment):
@@ -187,6 +214,11 @@ class BaseAgent(object):
 
         except:
             logging.error("    ERROR: %s could not be parsed",  _filename)
+    # a standard function reading parameters of the agents from
+    # an xml file, looking somewhat like the below
+    # <bank identifier='string'>
+    #     <parameter name='string' value='string'></parameter>
+    # </bank>
 
     #@abc.abstractmethod
     #def get_best_response(self, opponent_strategy):
