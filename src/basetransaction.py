@@ -19,26 +19,26 @@ class BaseTransaction(object):
     __metaclass__ = abc.ABCMeta
 
     @abc.abstractmethod
-    def get_transaction_type(self):
+    def get_type_(self):
         return
     @abc.abstractmethod
-    def set_transaction_type(self, _type):
+    def set_type_(self, _type):
         """
-        Class variables: transaction_type
+        Class variables: type_
         Local variables: _type
         """
         if not isinstance(_type, str):
             raise TypeError
         else:
-            self.transaction_type = _type
+            self.type_ = _type
         return
-    transaction_type = abc.abstractproperty(get_transaction_type, set_transaction_type)
+    type_ = abc.abstractproperty(get_type_, set_type_)
 
     @abc.abstractmethod
-    def get_transaction_asset(self):
+    def get_asset(self):
         return
     @abc.abstractmethod
-    def set_transaction_asset(self, _asset):
+    def set_asset(self, _asset):
         """
         Class variables: transaction_asset
         Local variables: _asset
@@ -46,154 +46,154 @@ class BaseTransaction(object):
         if not isinstance(_asset, str):
             raise TypeError
         else:
-            self.transaction_asset = _asset
+            self.asset = _asset
         return
-    transaction_asset = abc.abstractproperty(get_transaction_asset, set_transaction_asset)
+    asset = abc.abstractproperty(get_asset, set_asset)
 
     @abc.abstractmethod
-    def get_transaction_from(self):
+    def get_from_(self):
         return
     @abc.abstractmethod
-    def set_transaction_from(self, _from):
+    def set_from_(self, _from):
         """
-        Class variables: transaction_from
+        Class variables: from_
         Local variables: _from
         """
-        self.transaction_from = _from
+        self.transaction_from_ = _from
         return
-    transaction_from = abc.abstractproperty(get_transaction_from, set_transaction_from)
+    from_ = abc.abstractproperty(get_from_, set_from_)
 
     @abc.abstractmethod
-    def get_transaction_to(self):
+    def get_to(self):
         return
     @abc.abstractmethod
-    def set_transaction_to(self, _to):
+    def set_to(self, _to):
         """
-        Class variables: transaction_to
+        Class variables: to
         Local variables: _to
         """
-        self.transaction_to = _to
+        self.to = _to
         return
-    transaction_to = abc.abstractproperty(get_transaction_to, set_transaction_to)
+    to = abc.abstractproperty(get_to, set_to)
 
     @abc.abstractmethod
-    def get_transaction_value(self):
+    def get_value(self):
         return
     @abc.abstractmethod
-    def set_transaction_value(self, _value):
+    def set_value(self, _value):
         """
-        Class variables: transaction_value
+        Class variables: value
         Local variables: _value
         """
         if not isinstance(_value, float) or isinstance(_value, int):
             raise TypeError
         else:
-            self.transaction_value = float(_value)
+            self.value = float(_value)
         return
-    transaction_value = abc.abstractproperty(get_transaction_value, set_transaction_value)
+    value = abc.abstractproperty(get_value, set_value)
 
     @abc.abstractmethod
-    def get_transaction_interest(self):
+    def get_interest(self):
         return
     @abc.abstractmethod
-    def set_transaction_interest(self, _interest):
+    def set_interest(self, _interest):
         """
-        Class variables: transaction_interest
+        Class variables: interest
         Local variables: _interest
         """
         if not isinstance(_interest, float) or isinstance(_interest, int):
             raise TypeError
         else:
-            self.transaction_interest = float(_interest)
+            self.interest = float(_interest)
         return
-    transaction_interest = abc.abstractproperty(get_transaction_interest, set_transaction_interest)
+    interest = abc.abstractproperty(get_interest, set_interest)
 
     @abc.abstractmethod
-    def get_transaction_maturity(self):
+    def get_maturity(self):
         return
     @abc.abstractmethod
-    def set_transaction_maturity(self, _maturity):
+    def set_maturity(self, _maturity):
         """
-        Class variables: transaction_maturity
+        Class variables: maturity
         Local variables: _maturity
         """
         if not isinstance(_maturity, float) or isinstance(_maturity, int):
             raise TypeError
         else:
-            self.transaction_maturity = int(_maturity)
+            self.maturity = int(_maturity)
         return
-    transaction_maturity = abc.abstractproperty(get_transaction_maturity, set_transaction_maturity)
+    maturity = abc.abstractproperty(get_maturity, set_maturity)
 
     @abc.abstractmethod
-    def get_transaction_time_of_default(self):
+    def get_time_of_default(self):
         return
     @abc.abstractmethod
-    def set_transaction_time_of_default(self, _time_of_default):
+    def set_time_of_default(self, _time_of_default):
         """
-        Class variables: transaction_time_of_default
+        Class variables: time_of_default
         Local variables: _time_of_default
         """
         if not isinstance(_time_of_default, float) or isinstance(_time_of_default, int):
             raise TypeError
         else:
-            self.transaction_time_of_default = int(_time_of_default)
+            self.time_of_default = int(_time_of_default)
         return
-    transaction_time_of_default = abc.abstractproperty(get_transaction_time_of_default, set_transaction_time_of_default)
+    time_of_default = abc.abstractproperty(get_time_of_default, set_time_of_default)
 
     @abc.abstractmethod
-    def this_transaction(self, transaction_type, transaction_asset, transaction_from, transaction_to, transaction_value,  transaction_interest,  transaction_maturity, transaction_time_of_default):
-        self.transaction_type = transaction_type
+    def this_transaction(self, type_, asset, from_, to, value, interest, maturity, time_of_default):
+        self.type_ = type_
         # if transactionType == "I":
-        self.transaction_asset = transaction_asset
+        self.asset = asset
         # the convention used is that values are positive
-        if transaction_value >= 0:
-            self.transaction_from = transaction_from
-            self.transaction_to = transaction_to
+        if value >= 0:
+            self.from_ = from_
+            self.to = to
         else:  # negative values reverse direction and delete sign
-            self.transaction_from = transaction_to
-            self.transaction_to = transaction_from
-            transaction_value = abs(transaction_value)
-        self.transaction_value = transaction_value
-        self.transaction_interest = transaction_interest
-        self.transaction_maturity = transaction_maturity
-        self.transaction_time_of_default = transaction_time_of_default
+            self.from_ = to
+            self.to = from_
+            value = abs(value)
+        self.value = value
+        self.interest = interest
+        self.maturity = maturity
+        self.time_of_default = time_of_default
 
     @abc.abstractmethod
     def print_transaction(self):
-        print "        <transaction type='" + self.transaction_type + "'>"
-        if self.transaction_asset != "":
-            print "        <transaction asset='" + self.transaction_asset + "'>"
-        if hasattr(self.transaction_from, "identifier"):
-            print "            <property type='from' value='" + str(self.transaction_from.identifier) + "'></property>"
+        print "        <transaction type='" + self.type_ + "'>"
+        if self.asset != "":
+            print "        <transaction asset='" + self.asset + "'>"
+        if hasattr(self.from_, "identifier"):
+            print "            <property type='from' value='" + str(self.from_.identifier) + "'></property>"
         else:
-            print "            <property type='from' value='" + str(self.transaction_from) + "'></property>"
-        if hasattr(self.transaction_to, "identifier"):
-            print "            <property type='to' value='" + str(self.transaction_to.identifier) + "'></property>"
+            print "            <property type='from' value='" + str(self.from_) + "'></property>"
+        if hasattr(self.to, "identifier"):
+            print "            <property type='to' value='" + str(self.to.identifier) + "'></property>"
         else:
-            print "            <property type='to' value='" + str(self.transaction_to) + "'></property>"
-        print "            <property type='value' value='" + str(self.transaction_value) + "'></property>"
-        print "            <property type='interest' value='" + str(self.transaction_interest) + "'></property>"
-        print "            <property type='maturity' value='" + str(self.transaction_maturity) + "'></property>"
-        print "            <property type='time_of_default' value='" + str(self.transaction_time_of_default) + "'></property>"
+            print "            <property type='to' value='" + str(self.to) + "'></property>"
+        print "            <property type='value' value='" + str(self.value) + "'></property>"
+        print "            <property type='interest' value='" + str(self.interest) + "'></property>"
+        print "            <property type='maturity' value='" + str(self.maturity) + "'></property>"
+        print "            <property type='time_of_default' value='" + str(self.time_of_default) + "'></property>"
         print "        </transaction>"
 
     @abc.abstractmethod
     def write_transaction(self):
-        text = "        <transaction type='" + self.transaction_type + "'>\n"
-        if self.transaction_asset != "":
-            text += "        <transaction asset='" + self.transaction_asset + "'>\n"
-        if hasattr(self.transaction_from, "identifier"):
-            text += "            <property type='from' value='" + str(self.transaction_from.identifier) + "'></property>\n"
+        text = "        <transaction type='" + self.type_ + "'>\n"
+        if self.asset != "":
+            text += "        <transaction asset='" + self.asset + "'>\n"
+        if hasattr(self.from_, "identifier"):
+            text += "            <property type='from' value='" + str(self.from_.identifier) + "'></property>\n"
         else:
-            text += "            <property type='from' value='" + str(self.transaction_from) + "'></property>\n"
-        if hasattr(self.transaction_to, "identifier"):
-            text += "            <property type='to' value='" + str(self.transaction_to.identifier) + "'></property>\n"
+            text += "            <property type='from' value='" + str(self.from_) + "'></property>\n"
+        if hasattr(self.to, "identifier"):
+            text += "            <property type='to' value='" + str(self.to.identifier) + "'></property>\n"
         else:
-            text += "            <property type='to' value='" + str(self.transaction_to) + "'></property>\n"
-        text += "            <property type='value' value='" + str(self.transaction_value) + "'></property>\n"
-        text += "            <property type='interest' value='" + str(self.transaction_interest) + "'></property>\n"
-        text += "            <property type='maturity' value='" + str(self.transaction_maturity) + "'></property>\n"
-        text += "            <property type='time_of_default' value='" + str(self.transaction_time_of_default) + "'></property>\n"
+            text += "            <property type='to' value='" + str(self.to) + "'></property>\n"
+        text += "            <property type='value' value='" + str(self.value) + "'></property>\n"
+        text += "            <property type='interest' value='" + str(self.interest) + "'></property>\n"
+        text += "            <property type='maturity' value='" + str(self.maturity) + "'></property>\n"
+        text += "            <property type='time_of_default' value='" + str(self.time_of_default) + "'></property>\n"
         text += "        </transaction>\n"
 
         return text
