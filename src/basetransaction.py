@@ -83,21 +83,21 @@ class BaseTransaction(object):
     # agent being the recipient of the transaction
 
     @abc.abstractmethod
-    def get_value(self):
+    def get_amount(self):
         return
     @abc.abstractmethod
-    def set_value(self, _value):
+    def set_amount(self, _amount):
         """
-        Class variables: value
-        Local variables: _value
+        Class variables: amount
+        Local variables: _amount
         """
-        if not isinstance(_value, float) or isinstance(_value, int):
+        if not isinstance(_amount, float) or isinstance(_amount, int):
             raise TypeError
         else:
-            self.value = float(_value)
+            self.amount = float(_amount)
         return
-    value = abc.abstractproperty(get_value, set_value)
-    # value of the transaction
+    amount = abc.abstractproperty(get_amount, set_amount)
+    # amount of the transaction
 
     @abc.abstractmethod
     def get_interest(self):
@@ -151,23 +151,23 @@ class BaseTransaction(object):
     # control variable checking for defaulted transactions
 
     @abc.abstractmethod
-    def this_transaction(self, type_, asset, from_, to, value, interest, maturity, time_of_default):
+    def this_transaction(self, type_, asset, from_, to, amount, interest, maturity, time_of_default):
         self.type_ = type_
         # if transactionType == "I":
         self.asset = asset
-        # the convention used is that values are positive
-        if value >= 0:
+        # the convention used is that amounts are positive
+        if amount >= 0:
             self.from_ = from_
             self.to = to
-        else:  # negative values reverse direction and delete sign
+        else:  # negative amounts reverse direction and delete sign
             self.from_ = to
             self.to = from_
-            value = abs(value)
-        self.value = value
+            amount = abs(amount)
+        self.amount = amount
         self.interest = interest
         self.maturity = maturity
         self.time_of_default = time_of_default
-    # a standard function which sets the variables of the transaction to the given values
+    # a standard function which sets the variables of the transaction to the given amounts
 
     @abc.abstractmethod
     def print_transaction(self):
@@ -175,14 +175,14 @@ class BaseTransaction(object):
         if self.asset != "":
             print "        <transaction asset='" + self.asset + "'>"
         if hasattr(self.from_, "identifier"):
-            print "            <property type='from' value='" + str(self.from_.identifier) + "'></property>"
+            print "            <property type='from' amount='" + str(self.from_.identifier) + "'></property>"
         else:
             print "            <property type='from' value='" + str(self.from_) + "'></property>"
         if hasattr(self.to, "identifier"):
             print "            <property type='to' value='" + str(self.to.identifier) + "'></property>"
         else:
             print "            <property type='to' value='" + str(self.to) + "'></property>"
-        print "            <property type='value' value='" + str(self.value) + "'></property>"
+        print "            <property type='value' value='" + str(self.amount) + "'></property>"
         print "            <property type='interest' value='" + str(self.interest) + "'></property>"
         print "            <property type='maturity' value='" + str(self.maturity) + "'></property>"
         print "            <property type='time_of_default' value='" + str(self.time_of_default) + "'></property>"
@@ -202,7 +202,7 @@ class BaseTransaction(object):
             text += "            <property type='to' value='" + str(self.to.identifier) + "'></property>\n"
         else:
             text += "            <property type='to' value='" + str(self.to) + "'></property>\n"
-        text += "            <property type='value' value='" + str(self.value) + "'></property>\n"
+        text += "            <property type='value' value='" + str(self.amount) + "'></property>\n"
         text += "            <property type='interest' value='" + str(self.interest) + "'></property>\n"
         text += "            <property type='maturity' value='" + str(self.maturity) + "'></property>\n"
         text += "            <property type='time_of_default' value='" + str(self.time_of_default) + "'></property>\n"

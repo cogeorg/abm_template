@@ -143,7 +143,7 @@ class BaseAgent(object):
 
         for transaction in self.accounts:
             if (transaction.type_ == _type):
-                volume = volume + float(transaction.value)
+                volume = volume + float(transaction.amount)
 
         return volume
     # a standard function returning the value of all transactions
@@ -171,7 +171,7 @@ class BaseAgent(object):
         new_accounts = []
 
         for transaction in self.accounts:
-            if transaction.value > 0.0:
+            if transaction.amount > 0.0:
                 new_accounts.append(transaction)
 
         self.accounts = new_accounts
@@ -184,9 +184,9 @@ class BaseAgent(object):
 
         for transaction in self.accounts:
             if transaction.type_ in _assets:
-                assets = assets + transaction.value
+                assets = assets + transaction.amount
             if transaction.type_ in _liabilities:
-                liabilities = liabilities + transaction.value
+                liabilities = liabilities + transaction.amount
 
         if assets == liabilities:
             return True
