@@ -182,7 +182,7 @@ class BaseTransaction(object):
             print "            <property type='to' value='" + str(self.to.identifier) + "'></property>"
         else:
             print "            <property type='to' value='" + str(self.to) + "'></property>"
-        print "            <property type='value' value='" + str(self.amount) + "'></property>"
+        print "            <property type='amount' value='" + str(self.amount) + "'></property>"
         print "            <property type='interest' value='" + str(self.interest) + "'></property>"
         print "            <property type='maturity' value='" + str(self.maturity) + "'></property>"
         print "            <property type='time_of_default' value='" + str(self.time_of_default) + "'></property>"
@@ -202,7 +202,7 @@ class BaseTransaction(object):
             text += "            <property type='to' value='" + str(self.to.identifier) + "'></property>\n"
         else:
             text += "            <property type='to' value='" + str(self.to) + "'></property>\n"
-        text += "            <property type='value' value='" + str(self.amount) + "'></property>\n"
+        text += "            <property type='amount' value='" + str(self.amount) + "'></property>\n"
         text += "            <property type='interest' value='" + str(self.interest) + "'></property>\n"
         text += "            <property type='maturity' value='" + str(self.maturity) + "'></property>\n"
         text += "            <property type='time_of_default' value='" + str(self.time_of_default) + "'></property>\n"
