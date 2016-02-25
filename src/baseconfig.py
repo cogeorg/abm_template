@@ -32,6 +32,8 @@ class BaseConfig(object):
             self.identifier = _identifier
         return
     identifier = abc.abstractproperty(get_identifier, set_identifier)
+    # identifier of the specific environment used for distinguishing them / logging
+    # identifier should be a string
 
     @abc.abstractmethod
     def get_static_parameters(self):
@@ -48,6 +50,9 @@ class BaseConfig(object):
             self.static_parameters = _params
         return
     static_parameters = abc.abstractproperty(get_static_parameters, set_static_parameters)
+    # static parameters of the environment store parameters determining
+    # the behaviour of the simulation with a fixed value
+    # static_parameters should be a dictionary
 
     @abc.abstractmethod
     def get_variable_parameters(self):
@@ -64,7 +69,48 @@ class BaseConfig(object):
             self.variable_parameters = _params
         return
     variable_parameters = abc.abstractproperty(get_variable_parameters, set_variable_parameters)
+    # variable parameters of the environment store parameters determining
+    # the behaviour of the simulation with a range of values
+    # variable_parameters should be a dictionary
 
+    @abc.abstractmethod
+    def add_static_parameter(self, name, value):
+        """
+        Class variables: static_parameters
+        Local variables: name, value
+        """
+        self.static_parameters[name] = value
+    # an abstract method for adding a static parameter to the stack of static parameters
+
+    @abc.abstractmethod
+    def add_variable_parameter(self, name, range_from, range_to):
+        """
+        Class variables: variable_parameters
+        Local variables: name, range_from, range_to
+        """
+        self.variable_parameters[name] = [range_from, range_to]
+    # an abstract method for adding a variable parameter to the stack of variable parameters
+
+    @abc.abstractmethod
+    def print_parameters(self):
+        """
+        Class variables: static_parameters, variable_parameters
+        Local variables: key
+        """
+        for key in self.static_parameters:
+            print str(key) + ": " + str(self.static_parameters[key])
+        for key in self.variable_parameters:
+            print str(key) + ":" + " range: " + str(self.variable_parameters[key][0]) + "-" + str(self.variable_parameters[key][1])
+    # an abstract method for printing all (static and variable) parameters
+    # this is for testing purposes, do not use print in production
+
+    @abc.abstractmethod
+    def write_environment_file(self,  file_name):
+        out_file = open(file_name + "-check.xml",  'w')
+        text = self.__str__()
+        out_file.write(text)
+        out_file.close()
+    # an abstract method for writing a file with environment config to the current directory
 
     @abc.abstractmethod
     def __str__(self):
@@ -90,18 +136,18 @@ class BaseConfig(object):
         out_str += "</config>"
 
         return out_str
-
+    # an abstract method returning a string with environment's config
 
     @abc.abstractmethod
     def __init__(self):
         """
         Class variables: identifier, static_parameters, variable_parameters
-        Local variables: 
+        Local variables:
         """
         self.identifier = ""
         self.static_parameters = {}
         self.variable_parameters = {}
-
+    # an abstract method for initializing the environment
 
     @abc.abstractmethod
     def read_xml_config_file(self, config_file_name):
@@ -143,4 +189,5 @@ class BaseConfig(object):
                     self.variable_parameters[name] = [range_from, range_to]
                 else:
                     print "<< ERROR: FOUND ERROR IN FILE " + config_file_name + ", ABORTING"
-    #-------------------------------------------------------------------------
+    # an abstract method for reading an xml file with config
+    # and adding all the static and variable parameters
