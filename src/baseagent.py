@@ -4,6 +4,7 @@
 __author__ = """Co-Pierre Georg (co-pierre.georg@uct.ac.za)"""
 
 import abc
+import logging
 
 # -------------------------------------------------------------------------
 #
