@@ -204,6 +204,9 @@ class BaseAgent(object):
         try:
             xmlText = open(_filename).read()
             element = ElementTree.XML(xmlText)
+            print(element)
+            element = element.findall("parameter")
+            print(element)
             self.identifier = element.attrib['identifier']
 
             # loop over all entries in the xml file
