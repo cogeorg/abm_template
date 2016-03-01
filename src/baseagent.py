@@ -222,6 +222,35 @@ class BaseAgent(object):
     #     <parameter name='string' value='string'></parameter>
     # </bank>
 
+    @abc.abstractmethod
+    def get_transactions_from_file(self, filename, environment):
+        from xml.etree import ElementTree
+
+        try:
+            xmlText = open(filename).read()
+            element = ElementTree.XML(xmlText)
+            element = element.findall("transaction")
+
+            # loop over all entries in the xml file
+            for subelement in element:
+                type_ = str(subelement.attrib['type'])
+                asset = str(subelement.attrib['asset'])
+                from_ = str(subelement.attrib['from'])
+                to = str(subelement.attrib['to'])
+                amount = float(subelement.attrib['amount'])
+                interest = float(subelement.attrib['interest'])
+                maturity = float(subelement.attrib['maturity'])
+                time_of_default = float(subelement.attrib['time_of_default'])
+                from_ = environment.get_agent_by_id(from_)
+                to = environment.get_agent_by_id(to)
+                self.add_transaction(type_, asset, from_, to, amount,  interest,  maturity, time_of_default)
+
+        except:
+            logging.error("    ERROR: %s could not be parsed",  filename)
+    # a standard function for reading transactions from config files
+    # assumes different types of agents have different names
+    # ie bank1 & household1 and not 1 & 1
+
     #@abc.abstractmethod
     #def get_best_response(self, opponent_strategy):
     #    pass
