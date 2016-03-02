@@ -205,13 +205,16 @@ class BaseAgent(object):
         try:
             xmlText = open(_filename).read()
             element = ElementTree.XML(xmlText)
+            # we get the identifier
             self.identifier = element.attrib['identifier']
-            element = element.findall("parameter")
+            # and then we're only interested in <parameter> fields
+            element = element.findall('parameter')
 
-            # loop over all entries in the xml file
+            # loop over all <parameter> entries in the xml file
             for subelement in element:
                 name = subelement.attrib['name']
                 value = subelement.attrib['value']
+                # add them to parameter list
                 self.parameters[name] = float(value)
 
         except:
@@ -229,10 +232,12 @@ class BaseAgent(object):
         try:
             xmlText = open(filename).read()
             element = ElementTree.XML(xmlText)
-            element = element.findall("transaction")
+            # this time we're interested in <transaction> fields
+            element = element.findall('transaction')
 
             # loop over all entries in the xml file
             for subelement in element:
+                # we read all the fields
                 type_ = str(subelement.attrib['type'])
                 asset = str(subelement.attrib['asset'])
                 from_ = str(subelement.attrib['from'])
@@ -241,13 +246,16 @@ class BaseAgent(object):
                 interest = float(subelement.attrib['interest'])
                 maturity = float(subelement.attrib['maturity'])
                 time_of_default = float(subelement.attrib['time_of_default'])
+                # we find the actual agents by the ID found in the config
                 from_ = environment.get_agent_by_id(from_)
                 to = environment.get_agent_by_id(to)
-                self.add_transaction(type_, asset, from_, to, amount,  interest,  maturity, time_of_default)
+                # and add the transaction to the agent's accounts
+                self.add_transaction(type_, asset, from_, to, amount, interest, maturity, time_of_default)
 
         except:
             logging.error("    ERROR: %s could not be parsed",  filename)
-    # a standard function for reading transactions from config files
+    # a standard function for reading transactions from config files, e.g.
+    # <transaction type='deposits' asset='' from='bank_test_config_id' to='household_test_config_id' amount='30' interest='0.02' maturity='0' time_of_default='-1'></transaction>
     # assumes different types of agents have different names
     # ie bank1 & household1 and not 1 & 1
 
