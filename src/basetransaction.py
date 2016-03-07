@@ -173,9 +173,9 @@ class BaseTransaction(object):
     def print_transaction(self):
         print "        <transaction type='" + self.type_ + "'>"
         if self.asset != "":
-            print "        <transaction asset='" + self.asset + "'>"
+            print "            <transaction type='asset' value='" + self.asset + "'>"
         if hasattr(self.from_, "identifier"):
-            print "            <property type='from' amount='" + str(self.from_.identifier) + "'></property>"
+            print "            <property type='from' value='" + str(self.from_.identifier) + "'></property>"
         else:
             print "            <property type='from' value='" + str(self.from_) + "'></property>"
         if hasattr(self.to, "identifier"):
@@ -193,7 +193,7 @@ class BaseTransaction(object):
     def write_transaction(self):
         text = "        <transaction type='" + self.type_ + "'>\n"
         if self.asset != "":
-            text += "        <transaction asset='" + self.asset + "'>\n"
+            text += "            <transaction type='asset' value='" + self.asset + "'>\n"
         if hasattr(self.from_, "identifier"):
             text += "            <property type='from' value='" + str(self.from_.identifier) + "'></property>\n"
         else:
