@@ -91,7 +91,7 @@ class BaseTransaction(object):
         Class variables: amount
         Local variables: _amount
         """
-        if not isinstance(_amount, float) or isinstance(_amount, int):
+        if not (isinstance(_amount, float) or isinstance(_amount, int)):
             raise TypeError
         else:
             self.amount = float(_amount)
@@ -108,7 +108,7 @@ class BaseTransaction(object):
         Class variables: interest
         Local variables: _interest
         """
-        if not isinstance(_interest, float) or isinstance(_interest, int):
+        if not (isinstance(_interest, float) or isinstance(_interest, int)):
             raise TypeError
         else:
             self.interest = float(_interest)
@@ -125,7 +125,7 @@ class BaseTransaction(object):
         Class variables: maturity
         Local variables: _maturity
         """
-        if not isinstance(_maturity, float) or isinstance(_maturity, int):
+        if not (isinstance(_maturity, float) or isinstance(_maturity, int)):
             raise TypeError
         else:
             self.maturity = int(_maturity)
@@ -142,7 +142,7 @@ class BaseTransaction(object):
         Class variables: time_of_default
         Local variables: _time_of_default
         """
-        if not isinstance(_time_of_default, float) or isinstance(_time_of_default, int):
+        if not (isinstance(_time_of_default, float) or isinstance(_time_of_default, int)):
             raise TypeError
         else:
             self.time_of_default = int(_time_of_default)
