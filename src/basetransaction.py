@@ -210,3 +210,37 @@ class BaseTransaction(object):
 
         return text
     # a standard function which returns a string with the transaction and its properties
+
+    @abc.abstractmethod
+    def add_transaction(self, environment):
+        if isinstance(self.from_, str):
+            self.from_ = environment.get_agent_by_id(self.from_)
+        if isinstance(self.to, str):
+            self.to = environment.get_agent_by_id(self.to)
+        if self.from_ == self.to:
+            self.from_.accounts.append(self)
+        else:
+            self.from_.accounts.append(self)
+            self.to.accounts.append(self)
+    # a standard function which adds the transaction to the appropriate agents' accounts
+
+    @abc.abstractmethod
+    def clear_accounts(self, agent, environment):
+        list_of_deleted_transactions = []
+        for tranx in agent.accounts:
+            list_of_deleted_transactions.append(tranx.identifier)
+        agent.accounts = []
+        for bank in environment.banks:
+            for tranx in bank.accounts:
+                if tranx.identifier in list_of_deleted_transactions:
+                    del tranx
+        for firm in environment.firms:
+            for tranx in firm.accounts:
+                if tranx.identifier in list_of_deleted_transactions:
+                    del tranx
+        for household in environment.households:
+            for tranx in household.accounts:
+                if tranx.identifier in list_of_deleted_transactions:
+                    del tranx
+    # a standard function which clears the accounts of a given agent
+    # and deletes
