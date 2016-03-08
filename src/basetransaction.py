@@ -215,8 +215,10 @@ class BaseTransaction(object):
     def add_transaction(self, environment):
         if isinstance(self.from_, str):
             self.from_ = environment.get_agent_by_id(self.from_)
+            print(type(self.from_))
         if isinstance(self.to, str):
             self.to = environment.get_agent_by_id(self.to)
+            print(type(self.to))
         if self.from_ == self.to:
             self.from_.accounts.append(self)
         else:

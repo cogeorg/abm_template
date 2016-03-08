@@ -251,7 +251,7 @@ class BaseAgent(object):
                 from_ = environment.get_agent_by_id(from_)
                 to = environment.get_agent_by_id(to)
                 # and add the transaction to the agent's accounts
-                self.add_transaction(type_, asset, from_, to, amount, interest, maturity, time_of_default)
+                self.add_transaction(type_, asset, from_, to, amount, interest, maturity, time_of_default, environment)
 
         except:
             logging.error("    ERROR: %s could not be parsed",  filename)
