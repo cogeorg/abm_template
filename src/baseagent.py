@@ -164,8 +164,8 @@ class BaseAgent(object):
 
     @abc.abstractmethod
     def clear_accounts(self):
-        for tranx in self.accounts:
-            tranx.__del__()
+        while len(self.accounts) > 0:
+                self.accounts[0].__del__()
     # a standard function deleting all transactions of the agent
 
     @abc.abstractmethod

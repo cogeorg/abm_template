@@ -161,13 +161,16 @@ class BaseTransaction(object):
     def __del__(self):
         if hasattr(self.from_, "accounts"):  # and hasattr(self.to, "accounts"):
                 if self.from_ == self.to:
-                    self.from_.accounts.remove(self)
+                    for tranx in self.from_.accounts:
+                        if tranx.identifier == self.identifier:
+                            self.from_.accounts.remove(tranx)
                 else:
-                    self.from_.accounts.remove(self)
-                    self.to.accounts.remove(self)
-                del self
-        else:
-            del self
+                    for tranx in self.from_.accounts:
+                        if tranx.identifier == self.identifier:
+                            self.from_.accounts.remove(tranx)
+                    for tranx in self.to.accounts:
+                        if tranx.identifier == self.identifier:
+                            self.to.accounts.remove(tranx)
     # a standard method for deleting a transaction
     # makes sure to remove it from the appropriate agents' accounts
 
