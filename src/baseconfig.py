@@ -191,3 +191,15 @@ class BaseConfig(object):
                     print "<< ERROR: FOUND ERROR IN FILE " + config_file_name + ", ABORTING"
     # an abstract method for reading an xml file with config
     # and adding all the static and variable parameters
+
+    @abc.abstractproperty
+    def agents(self):
+        pass
+    # a list of all the agents, list of lists [types][instances]
+
+    @abc.abstractmethod
+    def agents_generator(self):
+        for agent_type in self.agents:
+            for agent in agent_type:
+                yield agent
+    # a standard method for iterating over all agents
