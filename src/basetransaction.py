@@ -151,6 +151,27 @@ class BaseTransaction(object):
     # control variable checking for defaulted transactions
 
     @abc.abstractmethod
+    def __init__(self):
+        import uuid
+        self.identifier = uuid.uuid4()
+    # a standard method for initialisation of a transaction
+    # creates a unique identifier
+
+    @abc.abstractmethod
+    def __del__(self):
+        if hasattr(self.from_, "accounts"):  # and hasattr(self.to, "accounts"):
+                if self.from_ == self.to:
+                    self.from_.accounts.remove(self)
+                else:
+                    self.from_.accounts.remove(self)
+                    self.to.accounts.remove(self)
+                del self
+        else:
+            del self
+    # a standard method for deleting a transaction
+    # makes sure to remove it from the appropriate agents' accounts
+
+    @abc.abstractmethod
     def this_transaction(self, type_, asset, from_, to, amount, interest, maturity, time_of_default):
         self.type_ = type_
         # if transactionType == "I":
@@ -244,3 +265,30 @@ class BaseTransaction(object):
                     del tranx
     # a standard function which clears the accounts of a given agent
     # and deletes
+
+    @abc.abstractmethod
+    def purge_accounts(self, environment, list_of_lists_of_agents):
+        for list_ in list_of_lists_of_agents:
+            for agent in list_:
+                new_accounts = []
+                for transaction in agent.accounts:
+                    if transaction.amount > 0.0:
+                        new_accounts.append(transaction)
+                agent.accounts = new_accounts
+    # a standard method for purging accounts of all agents
+
+    @abc.abstractmethod
+    def purge_accounts_agent(self, agent):
+        new_accounts = []
+        for transaction in agent.accounts:
+            if transaction.amount > 0.0:
+                new_accounts.append(transaction)
+
+        agent.accounts = new_accounts
+
+    @abc.abstractmethod
+    def clear_accounts(self, agent):
+        for tranx in agent.accounts:
+            tranx.__del__()
+    # a standard method for clearing accounts of an agent
+    # makes sure to remove them from other agents books as well
