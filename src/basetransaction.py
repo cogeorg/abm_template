@@ -62,7 +62,7 @@ class BaseTransaction(object):
         Class variables: from_
         Local variables: _from
         """
-        self.transaction_from_ = _from
+        self.from_ = _from
         return
     from_ = abc.abstractproperty(get_from_, set_from_)
     # agent being the originator of the transaction
