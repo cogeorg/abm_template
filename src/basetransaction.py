@@ -270,14 +270,13 @@ class BaseTransaction(object):
     # and deletes
 
     @abc.abstractmethod
-    def purge_accounts(self, environment, list_of_lists_of_agents):
-        for list_ in list_of_lists_of_agents:
-            for agent in list_:
-                new_accounts = []
-                for transaction in agent.accounts:
-                    if transaction.amount > 0.0:
-                        new_accounts.append(transaction)
-                agent.accounts = new_accounts
+    def purge_accounts(self, environment):
+        for agent in environment.agents_generator():
+            new_accounts = []
+            for transaction in agent.accounts:
+                if transaction.amount > 0.0:
+                    new_accounts.append(transaction)
+            agent.accounts = new_accounts
     # a standard method for purging accounts of all agents
 
     @abc.abstractmethod

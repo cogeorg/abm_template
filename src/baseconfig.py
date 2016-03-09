@@ -203,3 +203,80 @@ class BaseConfig(object):
             for agent in agent_type:
                 yield agent
     # a standard method for iterating over all agents
+
+    @abc.abstractmethod
+    def get_agent_by_id(self, ident):
+        to_return = None
+        for agent in self.agents_generator():
+            if agent.identifier == ident:
+                if to_return is None:  # checks whether something has been found previously in the function
+                    to_return = bank
+                else:
+                    raise LookupError('At least two agents have the same ID.')
+                    # if we have found something before then IDs are not unique, so we raise an error
+        return to_return
+    # a standard method for returning an agent based on a unique ID
+
+    @abc.abstractmethod
+    def check_global_transaction_balance(self, type_):
+        sum_lists = 0  # global sum, for checking the consistency numerically
+        # We check all the banks first
+        for agent in self.agents_generator:
+            # Dictionaries to keep all the incoming and outgoing transactions of the bank
+            tranx_list_from = {}
+            tranx_list_to = {}
+            # We populate the above with the amounts
+            for tranx in agent.accounts:
+                if tranx.type_ == type_:
+                    if tranx.from_ == agent:
+                        if tranx.to in tranx_list_to:
+                            tranx_list_to[tranx.to] = tranx_list_to[tranx.to] + tranx.amount
+                        else:
+                            tranx_list_to[tranx.to] = tranx.amount
+                    else:
+                        if tranx.from_ in tranx_list_from:
+                            tranx_list_from[tranx.from_] = tranx_list_from[tranx.from_] + tranx.amount
+                        else:
+                            tranx_list_from[tranx.from_] = tranx.amount
+            # And we check if the added transactions exist in the counterparty's books
+            # If they do we subtract the amount from the dictionaries
+            # So that we can check if the dictionaries go to 0 globally
+            for key in tranx_list_from:
+                for tranx in key.accounts:
+                    if tranx.type_ == type_:
+                        if tranx.from_ == key:
+                            if tranx.to == agent:
+                                tranx_list_from[key] = tranx_list_from[key] - tranx.amount
+            for key in tranx_list_to:
+                for tranx in key.accounts:
+                    if tranx.type_ == type_:
+                        if tranx.to == key:
+                            if tranx.from_ == agent:
+                                tranx_list_to[key] = tranx_list_to[key] - tranx.amount
+            # Then we add the dictionary entries to the global check variable
+            for key in tranx_list_from:
+                sum_lists += abs(tranx_list_from[key])
+            for key in tranx_list_to:
+                sum_lists += abs(tranx_list_to[key])
+        # We make the final check and return True if consistent, otherwise return False
+        if sum_lists == 0:
+            return True
+        else:
+            return False
+        # a standard method for making sure the transactions of a given type
+        # are consistent across all agents, ie the same transaction is of the same amount
+        # on both agents it concerns
+
+    @abc.abstractmethod
+    def __getattr__(self, attr):
+        if (attr in self.static_parameters) and (attr in self.variable_parameters):
+            raise AttributeError('The same name exists in both static and variable parameters.')
+        else:
+            try:
+                return self.static_parameters[attr]
+            except:
+                try:
+                    return self.variable_parameters[attr]
+                except:
+                    raise AttributeError('Environment has no attribute "%s".' % attr)
+    # a standard method for returning attributes from the dectionaries as attributes

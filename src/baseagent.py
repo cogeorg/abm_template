@@ -263,3 +263,17 @@ class BaseAgent(object):
     #@abc.abstractmethod
     #def get_best_response(self, opponent_strategy):
     #    pass
+
+    @abc.abstractmethod
+    def __getattr__(self, attr):
+        if (attr in self.parameters) and (attr in self.state_variables):
+            raise AttributeError('The same name exists in both parameters and state variables.')
+        else:
+            try:
+                return self.parameters[attr]
+            except:
+                try:
+                    return self.state_variables[attr]
+                except:
+                    raise AttributeError('Agent %s has no attribute "%s".' % self.identifier, attr)
+    # a standard method for retrieving items from dictionaries as class attributes
