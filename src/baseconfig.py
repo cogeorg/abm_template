@@ -199,7 +199,6 @@ class BaseConfig(object):
 
     @abc.abstractmethod
     def agents_generator(self):
-        self.agents = [self.banks, self.households, self.firms]
         if self.agents is not None:
             for agent_type in self.agents:
                 for agent in agent_type:
