@@ -241,11 +241,14 @@ class BaseTransaction(object):
             self.from_ = environment.get_agent_by_id(self.from_)
         if isinstance(self.to, str):
             self.to = environment.get_agent_by_id(self.to)
-        if self.from_ == self.to:
-            self.from_.accounts.append(self)
+        if hasattr(self.from_, "accounts") and hasattr(self.to, "accounts"):
+            if self.from_ == self.to:
+                self.from_.accounts.append(self)
+            else:
+                self.from_.accounts.append(self)
+                self.to.accounts.append(self)
         else:
-            self.from_.accounts.append(self)
-            self.to.accounts.append(self)
+            raise TypeError("Transaction's from or to is not an instance of an agent.")
     # a standard function which adds the transaction to the appropriate agents' accounts
 
     @abc.abstractmethod
