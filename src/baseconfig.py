@@ -199,9 +199,12 @@ class BaseConfig(object):
 
     @abc.abstractmethod
     def agents_generator(self):
-        for agent_type in self.agents:
-            for agent in agent_type:
-                yield agent
+        if self.agents is not None:
+            for agent_type in self.agents:
+                for agent in agent_type:
+                    yield agent
+        else:
+            raise LookupError('There are no agents to iterate over.')
     # a standard method for iterating over all agents
 
     @abc.abstractmethod
