@@ -213,7 +213,7 @@ class BaseConfig(object):
         for agent in self.agents_generator():
             if agent.identifier == ident:
                 if to_return is None:  # checks whether something has been found previously in the function
-                    to_return = bank
+                    to_return = agent
                 else:
                     raise LookupError('At least two agents have the same ID.')
                     # if we have found something before then IDs are not unique, so we raise an error
