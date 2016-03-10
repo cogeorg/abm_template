@@ -169,9 +169,9 @@ class BaseAgent(object):
     # a standard function deleting all transactions of the agent
 
     @abc.abstractmethod
-    def purge_accounts(self):
+    def purge_accounts(self, environment):
         if len(self.accounts) > 0:
-            self.accounts[0].purge_accounts()
+            self.accounts[0].purge_accounts(environment)
     # a standard function deleting all worthless transactions of the agent
 
     @abc.abstractmethod

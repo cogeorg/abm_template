@@ -228,7 +228,7 @@ class BaseConfig(object):
     def check_global_transaction_balance(self, type_):
         sum_lists = 0  # global sum, for checking the consistency numerically
         # We check all the banks first
-        for agent in self.agents_generator:
+        for agent in self.agents_generator():
             # Dictionaries to keep all the incoming and outgoing transactions of the bank
             tranx_list_from = {}
             tranx_list_to = {}
