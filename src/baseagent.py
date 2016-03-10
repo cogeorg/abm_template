@@ -165,18 +165,13 @@ class BaseAgent(object):
     @abc.abstractmethod
     def clear_accounts(self):
         while len(self.accounts) > 0:
-                self.accounts[0].__del__()
+                self.accounts[0].remove_transaction()
     # a standard function deleting all transactions of the agent
 
     @abc.abstractmethod
     def purge_accounts(self):
-        new_accounts = []
-
-        for transaction in self.accounts:
-            if transaction.amount > 0.0:
-                new_accounts.append(transaction)
-
-        self.accounts = new_accounts
+        if len(self.accounts) > 0:
+            self.accounts[0].purge_accounts()
     # a standard function deleting all worthless transactions of the agent
 
     @abc.abstractmethod

@@ -214,7 +214,11 @@ class BaseConfig(object):
                 else:
                     raise LookupError('At least two agents have the same ID.')
                     # if we have found something before then IDs are not unique, so we raise an error
-        return to_return
+        if to_return is None:
+            raise LookupError('No agents have the provided ID.')
+            # if we don't find any agent with that ID we raise an error
+        else:
+            return to_return
     # a standard method for returning an agent based on a unique ID
 
     @abc.abstractmethod

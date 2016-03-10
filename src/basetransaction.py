@@ -249,23 +249,26 @@ class BaseTransaction(object):
     # a standard function which adds the transaction to the appropriate agents' accounts
 
     @abc.abstractmethod
-    def clear_accounts(self, agent, environment):
-        list_of_deleted_transactions = []
-        for tranx in agent.accounts:
-            list_of_deleted_transactions.append(tranx.identifier)
-        agent.accounts = []
-        for bank in environment.banks:
-            for tranx in bank.accounts:
-                if tranx.identifier in list_of_deleted_transactions:
-                    del tranx
-        for firm in environment.firms:
-            for tranx in firm.accounts:
-                if tranx.identifier in list_of_deleted_transactions:
-                    del tranx
-        for household in environment.households:
-            for tranx in household.accounts:
-                if tranx.identifier in list_of_deleted_transactions:
-                    del tranx
+    def remove_transaction(self):
+        if hasattr(self.from_, "accounts"):  # and hasattr(self.to, "accounts"):
+                if self.from_ == self.to:
+                    for tranx in self.from_.accounts:
+                        if tranx.identifier == self.identifier:
+                            self.from_.accounts.remove(tranx)
+                else:
+                    for tranx in self.from_.accounts:
+                        if tranx.identifier == self.identifier:
+                            self.from_.accounts.remove(tranx)
+                    for tranx in self.to.accounts:
+                        if tranx.identifier == self.identifier:
+                            self.to.accounts.remove(tranx)
+    # a standard method for deleting a transaction
+    # makes sure to remove it from the appropriate agents' accounts
+
+    @abc.abstractmethod
+    def clear_accounts(self, agent):
+        while len(agent.accounts) > 0:
+            agent.accounts[0].remove_transaction()
     # a standard function which clears the accounts of a given agent
     # and deletes
 
@@ -278,19 +281,3 @@ class BaseTransaction(object):
                     new_accounts.append(transaction)
             agent.accounts = new_accounts
     # a standard method for purging accounts of all agents
-
-    @abc.abstractmethod
-    def purge_accounts_agent(self, agent):
-        new_accounts = []
-        for transaction in agent.accounts:
-            if transaction.amount > 0.0:
-                new_accounts.append(transaction)
-
-        agent.accounts = new_accounts
-
-    @abc.abstractmethod
-    def clear_accounts(self, agent):
-        for tranx in agent.accounts:
-            tranx.__del__()
-    # a standard method for clearing accounts of an agent
-    # makes sure to remove them from other agents books as well
