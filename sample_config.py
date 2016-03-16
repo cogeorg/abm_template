@@ -36,6 +36,7 @@ class Config(BaseConfig):
     identifier = ""
     static_parameters = {}
     variable_parameters = {}
+    agents = []
 
     def get_identifier(self):
         return self.identifier
@@ -63,3 +64,27 @@ class Config(BaseConfig):
 
     def read_xml_config_file(self, config_file_name):
         super(Config, self).read_xml_config_file(config_file_name)
+
+    def __getattr__(self, attr):
+        return super(Config, self).__getattr__(attr)
+
+    def add_static_parameter(self, name, value):
+        super(Config, self).add_static_parameter(name, value)
+
+    def add_variable_parameter(self, name, range_from, range_to):
+        super(Config, self).add_variable_parameter(name, range_from, range_to)
+
+    def agents_generator(self):
+        return super(Config, self).agents_generator()
+
+    def check_global_transaction_balance(self, type_):
+        super(Config, self).check_global_transaction_balance(type_)
+
+    def get_agent_by_id(self, ident):
+        return super(Config, self).get_agent_by_id(ident)
+
+    def print_parameters(self):
+        super(Config, self).print_parameters()
+
+    def write_environment_file(self,  file_name):
+        super(Config, self).write_environment_file(file_name)
