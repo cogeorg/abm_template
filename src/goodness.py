@@ -76,7 +76,7 @@ class Goodness(object):
         If minima and maxima are to be read from samples, then put "-inf" for low parameter and "inf" for high
 
         !!!
-        Other hypothesis different than x0=a we may also check if x0>=x1 (one output is bigger than other)
+        We may also check hypotheses different than x0=a, namely if x0>=x1 (one output is bigger than other)
         To do that use output with kind "comp", in column put "a-b" where a and b are integers representing
         column numbers for a hypothesis a>=b, always keep low="0.0" and target="0.0" for this hypothesis
         For high use any positive real number, if there is only this one hypothesis this is irrelevant
@@ -203,21 +203,21 @@ class Goodness(object):
     def read_directory(self):
         temp_folder = os.getcwd()  # This is to get working directory in order at the end of the function
         os.chdir(folder_name)
-        for filez in glob.glob("*.csv"):
+        for filez in glob.glob("*.csv"):  # Reading all files sequentially
             temp_out = self.read_output_mult(filez)
-            for row in temp_out:
+            for row in temp_out:  # Reading row by row in a file
                 temp_out_two = []
-                for iterator in out_column:
+                for iterator in out_column:  # Iterate by the config file hypotheses
                     temp_column = 0
-                    if type(iterator) == str:
+                    if type(iterator) == str:  # If we have a comparison hypothesis
                         temp_three = 0.0
                         if (float(row[int(iterator.split("-")[0])-1]) - float(row[int(iterator.split("-")[1])-1])) >= 0:
-                            temp_three = 0.0
+                            temp_three = 0.0  # If the first column in the hypothesis is bigger set to 0.0 (minimum distance from target)
                         else:
-                            temp_three = self.out_high[out_column.index(iterator)]
+                            temp_three = self.out_high[out_column.index(iterator)]  # If otherwise, set to maximum distance from target
                         temp_out_two.append(temp_three)
-                    elif type(iterator) == int:
-                        try:
+                    elif type(iterator) == int:  # If we have a regular hypothesis
+                        try:  # We check if it should be int or float and read accordingly
                             temp_column = self.out_column.index(iterator)
                             if self.out_type[temp_column] == "int":
                                 temp_out_two.append(int(row[iterator-1]))
@@ -225,7 +225,7 @@ class Goodness(object):
                                 temp_out_two.append(float(row[iterator-1]))
                         except:
                             temp_out_two.append(float(row[iterator-1]))
-                self.out_gotten.append(temp_out_two)
+                self.out_gotten.append(temp_out_two)  # We add lists to the list, for every row
         os.chdir(temp_folder)  # This is to get working directory in order at the end of the function
 
     # Check if maxima and minima are to be read from the config or from data
