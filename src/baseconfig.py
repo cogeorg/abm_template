@@ -122,18 +122,18 @@ class BaseConfig(object):
         for entry in self.static_parameters:
             value = self.static_parameters[entry]
             if isinstance(value, int) or isinstance(value, float) or isinstance(value, str):
-                out_str += "  <parameter type='static' name='" + entry + "' value='" + str(value) + "'></parameter>\n"
+                out_str = out_str + "  <parameter type='static' name='" + entry + "' value='" + str(value) + "'></parameter>\n"
             else:
                 raise TypeError
         for entry in self.variable_parameters:
             if isinstance(self.variable_parameters[entry], list):
                 from_value = self.variable_parameters[entry][0]
                 to_value = self.variable_parameters[entry][1]
-                out_str += "  <parameter type='variable' name='" + entry + "' range='" + str(from_value) + "-" + \
-                       str(to_value) + "'></parameter>\n"
+                out_str = out_str + "  <parameter type='variable' name='" + entry + "' range='" + str(from_value) + "-" + \
+                    str(to_value) + "'></parameter>\n"
             else:
                 raise TypeError
-        out_str += "</config>"
+        out_str = out_str + "</config>"
 
         return out_str
     # an abstract method returning a string with environment's config
@@ -262,9 +262,9 @@ class BaseConfig(object):
                                 tranx_list_to[key] = tranx_list_to[key] - tranx.amount
             # Then we add the dictionary entries to the global check variable
             for key in tranx_list_from:
-                sum_lists += abs(tranx_list_from[key])
+                sum_lists = sum_lists + abs(tranx_list_from[key])
             for key in tranx_list_to:
-                sum_lists += abs(tranx_list_to[key])
+                sum_lists = sum_lists + abs(tranx_list_to[key])
         # We make the final check and return True if consistent, otherwise return False
         if sum_lists == 0:
             return True

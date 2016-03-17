@@ -115,19 +115,19 @@ class BaseAgent(object):
         for entry in self.parameters:
             value = self.parameters[entry]
             if isinstance(value, int) or isinstance(value, float) or isinstance(value, str):
-                ret_str += "    <parameter type='agent' name='" + entry + "' value='" + str(value) + "'></parameter>\n"
+                ret_str = ret_str + "    <parameter type='agent' name='" + entry + "' value='" + str(value) + "'></parameter>\n"
             else:
                 raise TypeError
         for entry in self.state_variables:
             value = self.state_variables[entry]
             if isinstance(value, int) or isinstance(value, float) or isinstance(value, str):
-                ret_str += "    <variable name='" + entry + "' value='" + str(value) + "'></variable>\n"
+                ret_str = ret_str + "    <variable name='" + entry + "' value='" + str(value) + "'></variable>\n"
             elif isinstance(value, list):
-                ret_str += "    <variable name='" + entry + "' value='[" + str(value[0]) + "," + str(value[1]) + \
+                ret_str = ret_str + "    <variable name='" + entry + "' value='[" + str(value[0]) + "," + str(value[1]) + \
                            "]'></variable>\n"
             else:
                 raise TypeError
-        ret_str += "  </agent>\n"
+        ret_str = ret_str + "  </agent>\n"
 
         return ret_str
     # a standard method for writing a file with
@@ -156,7 +156,7 @@ class BaseAgent(object):
 
         for transaction in self.accounts:
             if (transaction.type_ == _type):
-                num_transactions += 1
+                num_transactions = num_transactions + 1
 
         return num_transactions
     # a standard function returning the number of all transactions

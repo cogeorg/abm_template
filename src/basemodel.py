@@ -88,14 +88,14 @@ class BaseModel(object):
         for entry in self.model_parameters:
             value = self.model_parameters[entry]
             if isinstance(value, int) or isinstance(value, float) or isinstance(value, str):
-                ret_str += "  <parameter type='model' name='" + entry + "' value='" + str(value) + "'></parameter>\n"
+                ret_str = ret_str + "  <parameter type='model' name='" + entry + "' value='" + str(value) + "'></parameter>\n"
             else:
                 raise TypeError
         for agent in self.agents:
-            ret_str += agent.__str__()
+            ret_str = ret_str + agent.__str__()
         if self.interactions:  # if interactions = None, don't print anything
-            ret_str += self.interactions.__str__()
-        ret_str += "</model>"
+            ret_str = ret_str + self.interactions.__str__()
+        ret_str = ret_str + "</model>"
 
         return ret_str
 

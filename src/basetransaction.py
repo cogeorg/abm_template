@@ -217,20 +217,20 @@ class BaseTransaction(object):
     def write_transaction(self):
         text = "        <transaction type='" + self.type_ + "'>\n"
         if self.asset != "":
-            text += "            <property type='asset' value='" + self.asset + "'>\n"
+            text = text + "            <property type='asset' value='" + self.asset + "'>\n"
         if hasattr(self.from_, "identifier"):
-            text += "            <property type='from' value='" + str(self.from_.identifier) + "'></property>\n"
+            text = text + "            <property type='from' value='" + str(self.from_.identifier) + "'></property>\n"
         else:
-            text += "            <property type='from' value='" + str(self.from_) + "'></property>\n"
+            text = text + "            <property type='from' value='" + str(self.from_) + "'></property>\n"
         if hasattr(self.to, "identifier"):
-            text += "            <property type='to' value='" + str(self.to.identifier) + "'></property>\n"
+            text = text + "            <property type='to' value='" + str(self.to.identifier) + "'></property>\n"
         else:
-            text += "            <property type='to' value='" + str(self.to) + "'></property>\n"
-        text += "            <property type='amount' value='" + str(self.amount) + "'></property>\n"
-        text += "            <property type='interest' value='" + str(self.interest) + "'></property>\n"
-        text += "            <property type='maturity' value='" + str(self.maturity) + "'></property>\n"
-        text += "            <property type='time_of_default' value='" + str(self.time_of_default) + "'></property>\n"
-        text += "        </transaction>\n"
+            text = text + "            <property type='to' value='" + str(self.to) + "'></property>\n"
+        text = text + "            <property type='amount' value='" + str(self.amount) + "'></property>\n"
+        text = text + "            <property type='interest' value='" + str(self.interest) + "'></property>\n"
+        text = text + "            <property type='maturity' value='" + str(self.maturity) + "'></property>\n"
+        text = text + "            <property type='time_of_default' value='" + str(self.time_of_default) + "'></property>\n"
+        text = text + "        </transaction>\n"
 
         return text
     # a standard function which returns a string with the transaction and its properties

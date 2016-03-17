@@ -261,7 +261,7 @@ class Goodness(object):
                 # obtained results
                 intermediate=0
                 for x in range(0, len(self.out_gotten)):
-                    intermediate += abs(float(self.out_gotten[x][0]) - out_target[0]) / max_diff
+                    intermediate = intermediate + abs(float(self.out_gotten[x][0]) - out_target[0]) / max_diff
                 # Finally, we average the results (with respect to sample length)
                 # and get the goodness of the model, which is printed out and saved in the decomposed form
                 goodness = 0
@@ -283,13 +283,13 @@ class Goodness(object):
                 for x in range(0, len(self.out_gotten)):
                     anotherinter = 0
                     for y in range(0, len(self.out_gotten[x])):
-                        anotherinter += (float(self.out_gotten[x][y]) - out_target[y]) ** 2
-                    intermediate += math.sqrt(anotherinter)
+                        anotherinter = anotherinter + (float(self.out_gotten[x][y]) - out_target[y]) ** 2
+                    intermediate = intermediate + math.sqrt(anotherinter)
                 goodness = 0
                 # Calculate the Euclidean maximum for normalisation
                 max_euclid = 0
                 for x in range(0, len(out_type)):
-                    max_euclid += max_diff[x] ** 2
+                    max_euclid = max_euclid + max_diff[x] ** 2
                 max_euclid = math.sqrt(max_euclid)
                 # Finally, calculate goodness
                 goodness = 1 - ( intermediate / ( max_euclid * float(len(self.out_gotten) ) ) )
@@ -309,7 +309,7 @@ class Goodness(object):
                 #  Then, calculate the sum of normalised (squared) differences between target in the hypothesis and the obtained results
                 intermediate=0
                 for x in range(0, len(self.out_gotten)):
-                    intermediate += (abs(float(self.out_gotten[x][0]) - out_target[0]) ** 2) / max_diff
+                    intermediate = intermediate + (abs(float(self.out_gotten[x][0]) - out_target[0]) ** 2) / max_diff
                 # Finally, we average the results (with respect to sample length) and get the goodness of the model, which is printed out and saved in the decomposed form
                 goodness = 0
                 goodness = 1 - ( intermediate / float(len(self.out_gotten) ) )
@@ -329,13 +329,13 @@ class Goodness(object):
                 for x in range(0, len(self.out_gotten)):
                     anotherinter = 0
                     for y in range(0, len(self.out_gotten[x])):
-                        anotherinter += (float(self.out_gotten[x][y]) - out_target[y]) ** 2
-                    intermediate += anotherinter
+                        anotherinter = anotherinter + (float(self.out_gotten[x][y]) - out_target[y]) ** 2
+                    intermediate = intermediate + anotherinter
                 goodness = 0
                 # Calculate the Euclidean maximum for normalisation
                 max_euclid = 0
                 for x in range(0, len(out_type)):
-                    max_euclid += max_diff[x]
+                    max_euclid = max_euclid + max_diff[x]
                 # Finally, calculate goodness
                 goodness = 1 - ( intermediate / ( max_euclid * float(len(self.out_gotten) ) ) )
                 # We write the output to .csv file for collating in case of parallel runs, the filename is unique based on system time
