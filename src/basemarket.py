@@ -139,7 +139,7 @@ class BaseMarket(object):
             # total supply and total demand at the tried price
             # First, supply:
             for supplier in suppliers:
-                supply = supply + supplier[0].supplier[1](price_dummy)
+                supply = supply + supplier[1](price_dummy)
             # Then, demand:
             for buyer in buyers:
                 demand = demand + buyer[0].buyer[1](price_dummy)
