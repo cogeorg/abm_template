@@ -127,8 +127,6 @@ class BaseMarket(object):
         # on runtime, if suspicious make a counter and error on
         # given number of loops
         while True:
-            print("PRICE DUMMY")
-            print(price_dummy)
             # On every run we compare tentative demand and supply
             # given the price we try out, so we initialise the
             # dummy demand and supply variables
