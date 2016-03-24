@@ -142,7 +142,7 @@ class BaseMarket(object):
                 supply = supply + supplier[1](price_dummy)
             # Then, demand:
             for buyer in buyers:
-                demand = demand + buyer[0].buyer[1](price_dummy)
+                demand = demand + buyer[1](price_dummy)
             # We check the exit condition, that is the convergence of
             # supply and demand +/- set tolerance
             if abs(demand - supply) / (demand + supply) <= self.tolerance:
