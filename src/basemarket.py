@@ -107,7 +107,7 @@ class BaseMarket(object):
         # TODO: rethink this, maybe if it's run multiple times start with
         #       previous equilibrium price, the below is tentative
         if starting_price == 0.0:
-            price_dummy = random.uniform(0, 10)
+            price_dummy = random.uniform(0, 10) + 0.01
         else:
             price_dummy = starting_price
         # Initialise dummy variables for exponential search
@@ -126,7 +126,13 @@ class BaseMarket(object):
         # the whole model will not work, so this can be checked
         # on runtime, if suspicious make a counter and error on
         # given number of loops
-        while True:
+        iteration_counter = 0
+        while to_returne:
+            iteration_counter = iteration_counter + 1
+            if price_dummy <= 0.0:
+                raise LookupError("Price search in tatonnement went to 0. Something's amiss.")
+            if iteration_counter > 1000:
+                raise LookupError("Price search in tatonnement took too long. Something's amiss.")
             # On every run we compare tentative demand and supply
             # given the price we try out, so we initialise the
             # dummy demand and supply variables
