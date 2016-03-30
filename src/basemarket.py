@@ -127,7 +127,7 @@ class BaseMarket(object):
         # on runtime, if suspicious make a counter and error on
         # given number of loops
         iteration_counter = 0
-        while to_returne:
+        while True:
             iteration_counter = iteration_counter + 1
             if price_dummy <= 0.0:
                 raise LookupError("Price search in tatonnement went to 0. Something's amiss.")
