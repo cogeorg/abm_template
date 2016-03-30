@@ -296,3 +296,84 @@ class BaseMarket(object):
         # And return the list to the caller
         return to_return
     # abstract method for rationing for agents with excess supply or demand
+
+
+    @abc.abstractmethod
+    def rationing_proportional(self, agents):
+        # We need random to iterate over agents randomly
+        import random
+        # Then we initialise the list that we'll be returning to caller
+        to_return = []
+        # We create the variables that will hold total demand,
+        # total supply, and their minimum or what will be exchanged
+        supply = 0.0
+        demand = 0.0
+        exchange = 0.0
+        # We go through agents and their supply or demand and calculate
+        # the above values
+        for agent in agents:
+            if agent[1] > 0:
+                supply = supply + agent[1]
+            else:
+                demand = demand + agent[1]
+        exchange = min(supply, demand)
+        # Then we adjust the supply or demand of all agents
+        # proportionately to the mismatch between supply and demand
+        # so that final allocations are proportionate to the original
+        # supply or demand
+        for agent in agents:
+            if agent[1] > 0:  # supply
+                agent[1] = agent[1] * (exchange / supply)
+            if agent[1] < 0:  # demand
+                agent[1] = agent[1] * (exchange / demand)
+        # We create a list of integers the length of the agents we get
+        itrange = list(range(0, len(agents)))
+        # And randomise this list for the purposes of iterating randomly
+        random.shuffle(itrange)
+        # And we iterate over the agents randomly by proxy of iterating
+        # through their places on the list [agents]
+        for i in itrange:
+            # Then we need another random pass through agents for the pairs
+            itrange_inner = list(range(0, len(agents)))
+            # But this time we remove the number belonging to the agent
+            # from the outer loop, since agents cannot trade with themselves
+            itrange_inner.remove(i)
+            # And randomise as above
+            random.shuffle(itrange_inner)
+            # Finally, we have the inner loop for the random pair iteration
+            for j in itrange_inner:
+                # We only trade if one agent has excess supply (positive value)
+                # while the other has excess demand (negative value)
+                if agents[i][1] * agents[j][1] < 0:
+                    # If the agent i is the one with excess demand
+                    if agents[i][1] < 0:
+                        # We find the value that will be traded as the minimum
+                        # between the agents' respective excess supply and demand
+                        value = min(abs(agents[i][1]), abs(agents[j][1]))
+                        # And append the resulting transaction to the list we
+                        # will return later with a list of three items:
+                        # [the_seller, the_buyer, amount_sold]
+                        to_return.append([agents[j][0], agents[i][0], value])
+                        # Finally, we need to amend the values of excess
+                        # supply and excess demand for the purpose of further
+                        # trades within the loops
+                        agents[i][1] = agents[i][1] + value
+                        agents[j][1] = agents[j][1] - value
+                    # If the agent j is the one with excess demand
+                    elif agents[i][1] > 0:
+                        # We find the value that will be traded as the minimum
+                        # between the agents' respective excess supply and demand
+                        value = min(abs(agents[i][1]), abs(agents[j][1]))
+                        # And append the resulting transaction to the list we
+                        # will return later with a list of three items:
+                        # [the_seller, the_buyer, amount_sold]
+                        to_return.append([agents[i][0], agents[j][0], value])
+                        # Finally, we need to amend the values of excess
+                        # supply and excess demand for the purpose of further
+                        # trades within the loops
+                        agents[i][1] = agents[i][1] - value
+                        agents[j][1] = agents[j][1] + value
+        # And return the list to the caller
+        return to_return
+    # abstract method for rationing for agents with excess supply or demand
+    # with proportional rationing
