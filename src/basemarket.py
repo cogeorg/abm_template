@@ -280,7 +280,7 @@ class BaseMarket(object):
                         agents[i][1] = agents[i][1] + value
                         agents[j][1] = agents[j][1] - value
                     # If the agent j is the one with excess demand
-                    else:
+                    elif agents[i][1] > 0:
                         # We find the value that will be traded as the minimum
                         # between the agents' respective excess supply and demand
                         value = min(abs(agents[i][1]), abs(agents[j][1]))
