@@ -269,7 +269,7 @@ class BaseMarket(object):
                     if agents[i][1] < 0:
                         # We find the value that will be traded as the minimum
                         # between the agents' respective excess supply and demand
-                        value = min(abs(agents[i][1]), agents[j][1])
+                        value = min(abs(agents[i][1]), abs(agents[j][1]))
                         # And append the resulting transaction to the list we
                         # will return later with a list of three items:
                         # [the_seller, the_buyer, amount_sold]
@@ -283,7 +283,7 @@ class BaseMarket(object):
                     else:
                         # We find the value that will be traded as the minimum
                         # between the agents' respective excess supply and demand
-                        value = min(abs(agents[i][1]), agents[j][1])
+                        value = min(abs(agents[i][1]), abs(agents[j][1]))
                         # And append the resulting transaction to the list we
                         # will return later with a list of three items:
                         # [the_seller, the_buyer, amount_sold]
