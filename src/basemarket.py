@@ -51,6 +51,7 @@ class BaseMarket(object):
         return
     tolerance = abc.abstractproperty(get_tolerance, set_tolerance)
     # tolerance of matching demand and supply with price
+    # fraction of demand and supply
 
     @abc.abstractmethod
     def get_resolution(self):
@@ -99,7 +100,7 @@ class BaseMarket(object):
     # an abstract method for initializing the market clearing class
 
     @abc.abstractmethod
-    def tatonnement(self, suppliers, buyers, starting_price):
+    def tatonnement(self, sellers, buyers, starting_price):
         import random
         # Initialise a variable which looks for the equilibrium price
         price_dummy = 0.0
@@ -144,7 +145,7 @@ class BaseMarket(object):
             # with the dummy price, and these are summed to
             # total supply and total demand at the tried price
             # First, supply:
-            for supplier in suppliers:
+            for supplier in sellers:
                 supply = supply + supplier[1](price_dummy)
             # Then, demand:
             for buyer in buyers:
@@ -315,7 +316,7 @@ class BaseMarket(object):
             if agent[1] > 0:
                 supply = supply + agent[1]
             else:
-                demand = demand + agent[1]
+                demand = demand - agent[1]
         exchange = min(supply, demand)
         # Then we adjust the supply or demand of all agents
         # proportionately to the mismatch between supply and demand
