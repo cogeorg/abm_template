@@ -298,7 +298,6 @@ class BaseMarket(object):
         return to_return
     # abstract method for rationing for agents with excess supply or demand
 
-
     @abc.abstractmethod
     def rationing_proportional(self, agents):
         # We need random to iterate over agents randomly
@@ -378,3 +377,69 @@ class BaseMarket(object):
         return to_return
     # abstract method for rationing for agents with excess supply or demand
     # with proportional rationing
+
+    def rationing_abstract(self, agents, matching_function, allow_match):
+        # We initialize the variable (list) that we're going to return
+        to_return = []
+        # The below list is for sorting through the pairs of agents
+        # and weeding the ones which are not allowed
+        pairs = []
+        # We go through all agents and create all pairs
+        # Since the order of agents in the pair doesn't matter in the code below
+        # We run only unique pairs in this sense (not AB and BA)
+        # We iterate over agents
+        for i in range(0, len(agents)):
+            # And once again over agents forward from the outter loop
+            for j in range(i+1, len(agents)):
+                # Assign the agents names, so it's easier below
+                agent_one = agents[i]
+                agent_two = agents[j]
+                # This check is in principle not needed in the setup above
+                # Checks if we don't have a pair of one agent with itself
+                if agent_one[0] != agent_two[0]:
+                    # And add a 'row' to the list with the agents
+                    # their priority of matching, and whether they are allowed]
+                    # to match (True or False)
+                    pairs.append([agent_one, agent_two, matching_function(agent_one[0], agent_two[0]), allow_match(agent_one[0], agent_two[0])])
+        # Then we sort the pairs by their matching priority (3rd column)
+        pairs = sorted(pairs, key=lambda pair: -pair[3])
+        # And remove any pairs which are not allowed to match
+        # i.e. their allow_match gives False
+        pairs = [x for x in pairs if x[3] is True]
+        # Then we ration based on the above
+        # So only through the pairs that are allowed to be matched
+        # and based on their matching priority
+        for pair in pairs:
+            # We check whether one agent has excess supply and the other excess demand
+            if pair[0][1] * pair[1][1] < 0:
+                # If the first agent is the one with excess demand
+                if pair[0][1] < 0:
+                    # We find the value that will be traded as the minimum
+                    # between the agents' respective excess supply and demand
+                    value = min(abs(pair[0][1]), abs(pair[1][1]))
+                    # And append the resulting transaction to the list we
+                    # will return later with a list of three items:
+                    # [the_seller, the_buyer, amount_sold]
+                    to_return.append([pair[1][0], pair[0][0], value])
+                    # Finally, we need to amend the values of excess
+                    # supply and excess demand for the purpose of further
+                    # trades within the loops
+                    pair[0][1] = pair[0][1] + value
+                    pair[1][1] = pair[1][1] - value
+                # If the second agent is the one with excess demand
+                elif pair[0][1] > 0:
+                    # We find the value that will be traded as the minimum
+                    # between the agents' respective excess supply and demand
+                    value = min(abs(pair[0][1]), abs(pair[1][1]))
+                    # And append the resulting transaction to the list we
+                    # will return later with a list of three items:
+                    # [the_seller, the_buyer, amount_sold]
+                    to_return.append([pair[0][0], pair[1][0], value])
+                    # Finally, we need to amend the values of excess
+                    # supply and excess demand for the purpose of further
+                    # trades within the loops
+                    pair[0][1] = pair[0][1] - value
+                    pair[1][1] = pair[1][1] + value
+        # And return the list to the caller
+        return to_return
+        # a standard method for rationing with queue and filtering
