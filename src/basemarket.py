@@ -403,6 +403,7 @@ class BaseMarket(object):
                     pairs.append([agent_one, agent_two, matching_function(agent_one[0], agent_two[0]), allow_match(agent_one[0], agent_two[0])])
         # Then we sort the pairs by their matching priority (3rd column)
         pairs = sorted(pairs, key=lambda pair: -pair[3])
+        print(pairs)
         # And remove any pairs which are not allowed to match
         # i.e. their allow_match gives False
         pairs = [x for x in pairs if x[3] is True]
