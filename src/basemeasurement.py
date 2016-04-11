@@ -8,12 +8,12 @@ __author__ = """Paweł Fiedor (pawel.fiedor@uct.ac.za)"""
 
 # ============================================================================
 #
-# class Measurement
+# class BaseMeasurement
 #
 # ============================================================================
 
 
-class Measurement(object):
+class BaseMeasurement(object):
     #
     # VARIABLES
     #
