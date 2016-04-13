@@ -135,7 +135,20 @@ class BaseModel(object):
         Class variables:
         Local variables: _id
         """
-        pass
+        to_return = None
+        for agent in self.agents:
+            if agent.identifier == _id:
+                if to_return is None:  # checks whether something has been found previously in the function
+                    to_return = agent
+                else:
+                    raise LookupError('At least two agents have the same ID.')
+                    # if we have found something before then IDs are not unique, so we raise an error
+        if to_return is None:
+            raise LookupError('No agents have the provided ID.')
+            # if we don't find any agent with that ID we raise an error
+        else:
+            return to_return
+    # a standard method for returning an agent based on a unique ID
 
     @abc.abstractmethod
     def check_agent_homogeneity(self):
