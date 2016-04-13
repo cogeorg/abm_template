@@ -247,8 +247,8 @@ class BaseMarket(object):
     def tatonnement_parallel(self, sellers, buyers, starting_price):
         import random
         # For parallelisation
-        from multiprocessing import Pool
-        pool = Pool()
+        import pathos.multiprocessing as mp
+        pool = mp.ProcessingPool()
         supply_functions = []
         demand_functions = []
         for seller in sellers:
@@ -298,9 +298,9 @@ class BaseMarket(object):
             # with the dummy price, and these are summed to
             # total supply and total demand at the tried price
             # First, supply:
-            supply = sum(pool.map_async(supply_functions, [price_dummy]).get())
+            supply = sum(pool.map_async(supply_functions, price_dummy).go())
             # Then, demand:
-            demand = sum(pool.map_async(demand_functions, price_dummy).get())
+            demand = sum(pool.map_async(demand_functions, price_dummy).go())
             # We check the exit condition, that is the convergence of
             # supply and demand +/- set tolerance
             # TESTif supply == 0.0 and demand > 0.0:
