@@ -298,9 +298,9 @@ class BaseMarket(object):
             # with the dummy price, and these are summed to
             # total supply and total demand at the tried price
             # First, supply:
-            supply = sum(pool.map_async(supply_functions, [price_dummy]))
+            supply = sum(pool.map_async(supply_functions, [price_dummy]).get())
             # Then, demand:
-            demand = sum(pool.map_async(demand_functions, price_dummy))
+            demand = sum(pool.map_async(demand_functions, price_dummy).get())
             # We check the exit condition, that is the convergence of
             # supply and demand +/- set tolerance
             # TESTif supply == 0.0 and demand > 0.0:
