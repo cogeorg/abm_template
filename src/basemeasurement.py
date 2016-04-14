@@ -230,17 +230,8 @@ class BaseMeasurement(object):
         out_row = []
         # And go through the config, again in the order of output columns
         for i in range(0, len(self.config)):
-            # If the value we want is static (a value to read)
-            if self.config[i+1][1] == "static":
-                # We append the row with the appropriate value
-                out_row.append(eval(self.config[i+1][2]))
-            # If the value we want is dynamic (a method to call)
-            elif self.config[i+1][1] == "dynamic":
-                # We append the row with the appropriate value
-                out_row.append(eval(self.config[i+1][2])(*self.config[i+1][3]))
-            # If the config states something else, raise an error
-            else:
-                raise LookupError("Measurement outputs should be static or dynamic.")
+            # We append the row with the appropriate value
+            out_row.append(self.wrapper(self.config[i+1][1]))
         # Finally we write the line to the output file
         self.csv_writer.writerow(out_row)
     # -------------------------------------------------------------------------
@@ -259,30 +250,24 @@ class BaseMeasurement(object):
     # read_xml_config_file(self, config_file_name)
     # Read the xml config file specifying the config file
     # which is a list of lists
-    # For static input, that is a variable gotten from somewhere we need
-    # -The number of the output column
-    # -Header used for this column
-    # -Designation that it is static, i.e. a string "static"
-    # -The full variable name as string, e.g. "self.environment.household[0].identifier"
-    # For dynamic input, that is a variable gotten from a method we need
-    # -The number of the output column
-    # -Header used for this column
-    # -Designation that it is dynamic, i.e. a string "dynamic"
-    # -The full method name as string, e.g. "self.environment.household[0].identifier"
-    # NOTE: Both variable and method string above must be reachable from Measurement class
-    # NOTE: That is why we have access to environment and runner (mostly for updater and step)
-    # -A list of arguments for the above method
+    # We need to specify the filename
+    # We also need to specify each output:
+    # - type: 'output'
+    # - column: integer specifying which column will be used for this
+    # - header: string written as header in the csv file in the column
+    # - value: string or number, identifier for the wrapper function
+    # specifying what the wrapper function returns
     # Thus:
-    # {column_number: [header,static/dynamic, variable / method, list_of_arguments],...:[...]]
-    # [int: [string, string, string / method, list],...:[...]]
+    # {column_number: [header, output, wrapper_id],...:[...]]
+    # [int: [string, string, string],...:[...]]
     #
     # Now we pass this on to the Measurement class through an xml file
     # which should look like this
     #
     # <measurement identifier='test_output'>
     #     <parameter type='filename' value='TestMeasurement.csv'></parameter>
-    #     <parameter type='static' column='1' header='Step' value='self.runner.current_step'></parameter>
-    #     <parameter type='dynamic' column='2' header='Deposits' method='self.environment.households[0].get_account' arguments='["deposits"]'></parameter>
+    #     <parameter type='output' column='1' header='Step' value='current_step'></parameter>
+    #     <parameter type='output' column='2' header='Deposits' value='household_deposits' ></parameter>
     # </measurement>
     #
     # -------------------------------------------------------------------------
@@ -299,10 +284,17 @@ class BaseMeasurement(object):
                 value = str(subelement.attrib['value'])
                 self.filename = value
 
-            if subelement.attrib['type'] == 'static':
-                self.config[int(subelement.attrib['column'])] = [str(subelement.attrib['header']), 'static', str(subelement.attrib['value'])]
+            if subelement.attrib['type'] == 'output':
+                self.config[int(subelement.attrib['column'])] = [str(subelement.attrib['header']), str(subelement.attrib['value'])]
 
-            if subelement.attrib['type'] == 'dynamic':
-                self.config[int(subelement.attrib['column'])] = [str(subelement.attrib['header']), 'dynamic', str(subelement.attrib['method']), eval(str(subelement.attrib['arguments']))]
         logging.info("  measurement config file have been read")
+    # -------------------------------------------------------------------------
+
+    # -------------------------------------------------------------------------
+    # wrapper(self, id)
+    # Wrapper for functions returning the desired values to be written
+    # -------------------------------------------------------------------------
+    @abc.abstractmethod
+    def wrapper(self, ident):
+        pass
     # -------------------------------------------------------------------------
