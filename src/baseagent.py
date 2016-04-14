@@ -56,7 +56,7 @@ class BaseAgent(object):
 
     @abc.abstractmethod
     def append_parameters(self, _params):
-        if not isinstance(_variables, dict):
+        if not isinstance(_params, dict):
             raise TypeError
         else:
             self.parameters.update(_params)
