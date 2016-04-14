@@ -108,7 +108,7 @@ class BaseMarket(object):
         # TODO: rethink this, maybe if it's run multiple times start with
         #       previous equilibrium price, the below is tentative
         if starting_price == 0.0:
-            price_dummy = random.uniform(0, 10) + 0.01
+            price_dummy = 0.00001
         else:
             price_dummy = starting_price
         # Initialise dummy variables for exponential search
