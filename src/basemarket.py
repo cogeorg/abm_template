@@ -152,8 +152,8 @@ class BaseMarket(object):
                 demand = demand + buyer[1](price_dummy)
             # We check the exit condition, that is the convergence of
             # supply and demand +/- set tolerance
-            #TESTif supply == 0.0 and demand > 0.0:
-            #TEST    return price_dummy
+            if demand == 0.0 and supply == 0.0:
+                raise LookupError("Both supply and demand have yielded 0.0 in price search, check the supply and demand functions supplied.")
             if abs(demand - supply) / (demand + supply) <= self.tolerance:
                 # If we found equilibrium price we return it to the caller
                 return price_dummy
