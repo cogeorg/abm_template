@@ -201,8 +201,11 @@ class BaseConfig(object):
     def agents_generator(self):
         if self.agents is not None:
             for agent_type in self.agents:
-                for agent in agent_type:
-                    yield agent
+                if type(agent_type) == list:
+                    for agent in agent_type:
+                        yield agent
+                else:
+                    yield agent_type
         else:
             raise LookupError('There are no agents to iterate over.')
     # a standard method for iterating over all agents

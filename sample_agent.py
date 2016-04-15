@@ -39,7 +39,7 @@ class Agent(BaseAgent):
         super(Agent, self).set_state_variables(_value)
 
     def __str__(self):
-        super(Agent, self).__str__()
+        return super(Agent, self).__str__()
 
     def __init__(self, _identifier, _params, _variables):
         super(Agent, self).__init__(_identifier, _params, _variables)

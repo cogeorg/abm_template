@@ -88,3 +88,6 @@ class Config(BaseConfig):
 
     def write_environment_file(self,  file_name):
         super(Config, self).write_environment_file(file_name)
+
+    def accrue_interests(self):
+        super(Config, self).accrue_interests()
