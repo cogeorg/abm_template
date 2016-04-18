@@ -772,7 +772,7 @@ class TestsAgent(object):
         from sample_transaction import Transaction
         transaction = Transaction()
         transaction.this_transaction("deposits", "", agent.identifier,
-                                     agent.identifier, 0.0,  0.09,  0, -1)
+                                     agent.identifier, 10.0,  0.09,  0, -1)
         # environment.firms[0] is only for testing purposes DO NOT USE IN PRODUCTION
         transaction.add_transaction(config)
         # environment.households[0:1][0] is only for testing purposes DO NOT USE IN PRODUCTION
@@ -930,10 +930,10 @@ class TestsAgent(object):
 
         # generate an agent
         agent = Agent("baseagent id", {"test": "parameters"}, {"test": "variables"})
-        agent.identifier = "test_agent"
+        agent.identifier = "firm_test_config_id"
         config.agents = []
         config.agents.append(agent)
-        agent.get_parameters_from_file(firmFilename, config)
+        #config.agent.get_parameters_from_file(firmFilename, config)
 
         #
         # TESTING
@@ -944,7 +944,7 @@ class TestsAgent(object):
         print(config.agents[0])
         print("Reading transactions from the config file.\n")
         print("Printing agent: \n")
-        agent.get_transactions_from_file(firm_directory + listing[0], config)
+        config.agents[0].get_transactions_from_file(firm_directory + listing[0], config)
         print(config.agents[0])
 
     # -------------------------------------------------------------------------
