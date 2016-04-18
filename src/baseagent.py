@@ -127,6 +127,8 @@ class BaseAgent(object):
                            "]'></variable>\n"
             else:
                 raise TypeError
+        for transaction in self.accounts:
+            ret_str = ret_str + transaction.write_transaction()
         ret_str = ret_str + "  </agent>\n"
 
         return ret_str
