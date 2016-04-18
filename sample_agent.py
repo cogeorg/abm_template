@@ -42,6 +42,10 @@ class Agent(BaseAgent):
         return super(Agent, self).__str__()
 
     def __init__(self, _identifier, _params, _variables):
+        self.identifier = ""
+        self.parameters = {}
+        self.state_variables = {}
+        self.accounts = []
         super(Agent, self).__init__(_identifier, _params, _variables)
 
     def __getattr__(self, attr):

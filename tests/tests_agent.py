@@ -61,7 +61,6 @@ class TestsAgent(object):
     # -------------------------------------------------------------------------
 
     def agent__get_identifier(self, args):
-        import os
         from sample_agent import Agent
         from sample_config import Config  # needed for the bankDirectory
 
@@ -103,7 +102,6 @@ class TestsAgent(object):
     # -------------------------------------------------------------------------
 
     def agent__set_identifier(self, args):
-        import os
         from sample_agent import Agent
         from sample_config import Config  # needed for the bankDirectory
 
@@ -149,7 +147,6 @@ class TestsAgent(object):
     # -------------------------------------------------------------------------
 
     def agent__get_parameters(self, args):
-        import os
         from sample_agent import Agent
         from sample_config import Config  # needed for the bankDirectory
 
@@ -191,7 +188,6 @@ class TestsAgent(object):
     # -------------------------------------------------------------------------
 
     def agent__set_parameters(self, args):
-        import os
         from sample_agent import Agent
         from sample_config import Config  # needed for the bankDirectory
 
@@ -237,7 +233,6 @@ class TestsAgent(object):
     # -------------------------------------------------------------------------
 
     def agent__append_parameters(self, args):
-        import os
         from sample_agent import Agent
         from sample_config import Config  # needed for the bankDirectory
 
@@ -284,7 +279,6 @@ class TestsAgent(object):
     # -------------------------------------------------------------------------
 
     def agent__get_state_variables(self, args):
-        import os
         from sample_agent import Agent
         from sample_config import Config  # needed for the bankDirectory
 
@@ -326,7 +320,6 @@ class TestsAgent(object):
     # -------------------------------------------------------------------------
 
     def agent__set_state_variables(self, args):
-        import os
         from sample_agent import Agent
         from sample_config import Config  # needed for the bankDirectory
 
@@ -372,7 +365,6 @@ class TestsAgent(object):
     # -------------------------------------------------------------------------
 
     def agent__append_state_variables(self, args):
-        import os
         from sample_agent import Agent
         from sample_config import Config  # needed for the bankDirectory
 
@@ -419,7 +411,6 @@ class TestsAgent(object):
     # -------------------------------------------------------------------------
 
     def agent__str(self, args):
-        import os
         from sample_agent import Agent
         from sample_config import Config  # needed for the bankDirectory
 
@@ -459,7 +450,6 @@ class TestsAgent(object):
     # -------------------------------------------------------------------------
 
     def agent__init(self, args):
-        import os
         from sample_agent import Agent
         from sample_config import Config  # needed for the bankDirectory
 
@@ -545,7 +535,7 @@ class TestsAgent(object):
         text = text + "\n"
         text = text + "Productivity: "
         text = text + str(agent.parameters["productivity"])
-        self.print_info(text)
+        print(text)
 
     # -------------------------------------------------------------------------
 
@@ -594,29 +584,34 @@ class TestsAgent(object):
         config.agents.append(agent)
         agent.get_parameters_from_file(firmFilename, config)
 
+        agent_helper = Agent("helperagent id", {"test": "parameters"}, {"test": "variables"})
+        agent_helper.identifier = "helper_agent"
+        config.agents.append(agent_helper)
+
         from sample_transaction import Transaction
         amount = 150.0
         transaction = Transaction()
-        transaction.this_transaction("loans", "", agent.identifier, agent.identifier,
+        transaction.this_transaction("loans", "", agent.identifier, agent_helper.identifier,
                                      amount,  0.0,  0, -1)
         # environment.firms[0] is only for testing purposes DO NOT USE IN PRODUCTION
         transaction.add_transaction(config)
-        amount = 150.0
+        amount = 100.0
         transaction = Transaction()
-        transaction.this_transaction("cash", "", agent.identifier, agent.identifier,
+        transaction.this_transaction("cash", "", agent.identifier, agent_helper.identifier,
                                      amount,  0.0,  0, -1)
         # environment.firms[0] is only for testing purposes DO NOT USE IN PRODUCTION
         transaction.add_transaction(config)
-        amount = 200.0
+        amount = 250.0
         transaction = Transaction()
-        transaction.this_transaction("goods", "", agent.identifier, agent.identifier,
+        transaction.this_transaction("goods", "", agent.identifier, agent_helper.identifier,
                                      amount,  0.0,  0, -1)
         # environment.firms[0] is only for testing purposes DO NOT USE IN PRODUCTION
         transaction.add_transaction(config)
+
         #
         # TESTING
         #
-
+        print(agent.accounts)
         account = 0.0                                           # counting all types in account together
         print(agent.__str__())                                             # and checking how much is the total
         # volume of the account
@@ -817,7 +812,7 @@ class TestsAgent(object):
         from sample_agent import Agent
         from sample_config import Config  # needed for the bankDirectory
 
-        text = "This test checks firm.purge_accounts \n"
+        text = "This test checks agent.purge_accounts \n"
         text = text + "  Checking if after the purge_accounts the total amount    \n"
         text = text + "  of transactions in the firm stays the same.  \n"
         self.print_info(text)
@@ -831,7 +826,7 @@ class TestsAgent(object):
         # Configure logging parameters so we get output while the program runs
         logging.basicConfig(format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %H:%M:%S',
                             filename=log_directory + identifier + ".log", level=logging.INFO)
-        logging.info('START logging for test agent__clear_accounts in run: %s',
+        logging.info('START logging for test agent__purge_accounts in run: %s',
                      environment_directory + identifier + ".xml")
 
         # Construct firm filename
