@@ -14,7 +14,7 @@ __author__ = """Paweł Fiedor (pawel.fiedor@uct.ac.za)"""
 
 class BaseRunner(object):
     """
-    Class variables: __metaclass__, identifier, num_simulations
+    Class variables: __metaclass__, identifier, num_sweeps
     """
     __metaclass__ = abc.ABCMeta
 
@@ -35,20 +35,20 @@ class BaseRunner(object):
     identifier = abc.abstractproperty(get_identifier, set_identifier)
 
     @abc.abstractmethod
-    def get_num_simulations(self):
+    def get_num_sweeps(self):
         return
     @abc.abstractmethod
-    def set_num_simulations(self, _num_simulations):
+    def set_num_sweeps(self, _num_sweeps):
         """
-        Class variables: num_simulations
-        Local variables: _num_simulations
+        Class variables: num_sweeps
+        Local variables: _num_sweeps
         """
-        if not isinstance(_num_simulations, int):
+        if not isinstance(_num_sweeps, int):
             raise TypeError
         else:
-            self.num_simulations = _num_simulations
+            self.num_sweeps = _num_sweeps
         return
-    num_simulations = abc.abstractproperty(get_num_simulations, set_num_simulations)
+    num_sweeps = abc.abstractproperty(get_num_sweeps, set_num_sweeps)
 
     @abc.abstractmethod
     def __init__(self, model_config):
@@ -56,10 +56,10 @@ class BaseRunner(object):
         Class variables:
         Local variables: _params, model_config
         """
-        _num_simulations = model_config.get_model_parameters()['num_sweeps']
+        _num_sweeps = model_config.get_model_parameters()['num_sweeps']
 
         self.set_identifier(model_config.identifier)
-        self.set_num_simulations(_num_simulations)
+        self.set_num_sweeps(_num_sweeps)
 
     @abc.abstractmethod
     def do_run(self):
