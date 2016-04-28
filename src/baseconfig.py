@@ -73,6 +73,26 @@ class BaseConfig(object):
     # the behaviour of the simulation with a range of values
     # variable_parameters should be a dictionary
 
+
+    @abc.abstractmethod
+    def get_assets(self):
+        return
+    @abc.abstractmethod
+    def set_assets(self, _assets):
+        """
+        Class variables: assets
+        Local variables: _assets
+        """
+        if not isinstance(_assets, dict):
+            raise TypeError
+        else:
+            self.assets = _assets
+        return
+    assets = abc.abstractproperty(get_assets, set_assets)
+    # assets store the names of the assets as well as the properties of
+    # their stochastic returns (mean and variance) and last return (updated dynamically)
+    # assets should be a dictionary
+
     @abc.abstractmethod
     def add_static_parameter(self, name, value):
         """
@@ -162,6 +182,19 @@ class BaseConfig(object):
         # loop over all entries in the xml file
         for subelement in element:
             name = subelement.attrib['name']
+
+            if subelement.attrib['type'] == 'asset':
+                try:
+                    mean = float(subelement.attrib['mean'])
+                except:
+                    format_correct = False
+                    print "<< ERROR: mean must be a float. Found: " + str(subelement.attrib['mean'])
+                try:
+                    variance = float(subelement.attrib['variance'])
+                except:
+                    format_correct = False
+                    print "<< ERROR: variance must be a float. Found: " + str(subelement.attrib['variance'])
+                self.assets[name] = [mean, variance, 0.0]
 
             if subelement.attrib['type'] == 'static':
                 try:  # we see whether the value is a float
@@ -304,3 +337,11 @@ class BaseConfig(object):
                     # The below makes sure that we don't double count
                     done_list.append(tranx.identifier)
     # a standard method for accruing interest on all transactions
+
+    @abc.abstractmethod
+    def update_asset_returns(self):
+        from random import gauss
+        from math import sqrt
+        for key in self.assets:
+            assets[key][2] = gauss(assets[key][0], sqrt(assets[key][1]))
+    # a standard method for generating stochastic returns of assets
