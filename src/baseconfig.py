@@ -343,5 +343,5 @@ class BaseConfig(object):
         from random import gauss
         from math import sqrt
         for key in self.assets:
-            assets[key][2] = gauss(assets[key][0], sqrt(assets[key][1]))
+            self.assets[key][2] = gauss(self.assets[key][0], sqrt(self.assets[key][1]))
     # a standard method for generating stochastic returns of assets
