@@ -218,8 +218,13 @@ class BaseConfig(object):
                     format_correct = False
                     print "<< ERROR: range_to must be a float or int. Found: " + str(subelement.attrib['range'].rsplit("-")[1])
 
+                try:  # we see whether the value is a float
+                    value = float(subelement.attrib['value'])
+                except:  # if not, it is a string
+                    value = str(subelement.attrib['value'])
+
                 if format_correct:
-                    self.variable_parameters[name] = [range_from, range_to]
+                    self.variable_parameters[name] = [range_from, range_to, value]
                 else:
                     print "<< ERROR: FOUND ERROR IN FILE " + config_file_name + ", ABORTING"
     # an abstract method for reading an xml file with config
