@@ -73,7 +73,6 @@ class BaseConfig(object):
     # the behaviour of the simulation with a range of values
     # variable_parameters should be a dictionary
 
-
     @abc.abstractmethod
     def get_assets(self):
         return
@@ -92,6 +91,35 @@ class BaseConfig(object):
     # assets store the names of the assets as well as the properties of
     # their stochastic returns (mean and variance) and last return (updated dynamically)
     # assets should be a dictionary
+
+    @abc.abstractmethod
+    def get_shocks(self):
+        return
+    @abc.abstractmethod
+    def set_shocks(self, _shocks):
+        """
+        Class variables: shocks
+        Local variables: _shocks
+        """
+        if not isinstance(_shocks, list):
+            raise TypeError
+        else:
+            self.shocks = _shocks
+        return
+    shocks = abc.abstractproperty(get_shocks, set_shocks)
+    # shocks store the range of sweeps to which shock applies and it's kind
+    # so it is a list of lists: [range_from, range_to, type_of_shock]
+    # shocks should be a list
+
+    @abc.abstractmethod
+    def add_shock(self, shock):
+        """
+        Class variables: shocks
+        Local variables: shock
+        """
+        self.shocks.append(shock)
+    # an abstract method for adding a shock to the stack of shocks
+
 
     @abc.abstractmethod
     def add_static_parameter(self, name, value):
@@ -234,6 +262,11 @@ class BaseConfig(object):
     def agents(self):
         pass
     # a list of all the agents, list of lists [types][instances]
+
+    @abc.abstractproperty
+    def shocks(self):
+        pass
+    # a list of all the shocks, list of lists
 
     @abc.abstractmethod
     def agents_generator(self):
