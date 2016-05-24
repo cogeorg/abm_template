@@ -30,9 +30,12 @@ In the main folder we have the sample implementation of the abm_template, as des
 
 The sample implementation is very basic and shows to implement the abstract base classes, the implementation is of a simple game with parameter
 theta, two agents, two choices of action (1,0) and a payout matrix:
+
+```
   	1				0
 1 [	(1-theta,1-theta)		(-theta,0)	]
 0 [	(0,-theta)			(0,0)		]
+```
 
 There are simple equilibria:
 Theta is known to both agents, there is common knowledge about theta.
