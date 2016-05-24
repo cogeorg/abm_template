@@ -32,8 +32,8 @@ The sample implementation is very basic and shows to implement the abstract base
 theta, two agents, two choices of action (1,0) and a payout matrix:
 
 ```
-  	1				0
-1 [	(1-theta,1-theta)		(-theta,0)	]
+  	 1   				0
+1 [	(1-theta,1-theta)	(-theta,0)	]
 0 [	(0,-theta)			(0,0)		]
 ```
 
@@ -52,5 +52,7 @@ python sample.py
 ```
 
 co-pierre.georg@uct.ac.za
+
 pawel.fiedor@uct.ac.za
+
 2016
