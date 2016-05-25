@@ -81,7 +81,7 @@ class Agent(BaseAgent):
         super(Agent, self).purge_accounts(environment)
 
     def add_transaction(self, type_, asset,  from_id,  to_id,  amount,  interest,  maturity, time_of_default, environment):
-        from sample_transaction import Transaction
+        from sample.sample_transaction import Transaction
         transaction = Transaction()
         transaction.this_transaction(type_, asset, from_id,  to_id,  amount,  interest,  maturity,  time_of_default)
         transaction.add_transaction(environment)

@@ -7,8 +7,8 @@ import random
 
 from src.basemodel import BaseModel
 
-from sample_config import Config
-from sample_agent import Agent
+from sample.sample_config import Config
+from sample.sample_agent import Agent
 
 
 class Model(BaseModel):

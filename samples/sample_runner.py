@@ -24,8 +24,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 # import math
 from src.baserunner import BaseRunner
 
-from sample_config import Config
-from sample_model import Model
+from sample.sample_config import Config
+from sample.sample_model import Model
 
 # ============================================================================
 #

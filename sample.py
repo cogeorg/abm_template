@@ -12,8 +12,8 @@ Date of last update: 20-11-2015 (Cape Town)
 """
 if __name__ == '__main__':
     import sys
-    from sample_config import Config
-    from sample_runner import Runner
+    from samples.sample_config import Config
+    from samples.sample_runner import Runner
 
     args = sys.argv
 
