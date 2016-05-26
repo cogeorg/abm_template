@@ -3,9 +3,9 @@
 # -*- coding: utf-8 -*-
 
 """
-black_rhino is a multi-agent simulator for financial network analysis
-Copyright (C) 2016 Co-Pierre Georg (co-pierre.georg@keble.ox.ac.uk)
-Pawel Fiedor (pawel@fiedor.eu)
+abm_template is a multi-agent simulator template for financial  analysis
+Copyright (C) 2016 Co-Pierre Georg (co-pierre.georg@uct.ac.za)
+Pawel Fiedor (pawel.fiedor@uct.ac.za)
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

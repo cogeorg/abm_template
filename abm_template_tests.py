@@ -5,8 +5,9 @@
 """
 This is a minimal example.
 
-black_rhino is a multi-agent simulator for financial network analysis
-Copyright (C) 2012 Co-Pierre Georg (co-pierre.georg@keble.ox.ac.uk)
+abm_template is a multi-agent simulator template for financial analysis
+Copyright (C) 2016 Co-Pierre Georg (co-pierre.georg@uct.ac.za)
+ & Paweł Fiedor (pawel.fiedor@uct.ac.za)
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -19,9 +20,6 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>
-
-The development of this software has been supported by the ERA-Net
-on Complexity through the grant RESINEE.
 """
 
 # -------------------------------------------------------------------------
@@ -36,6 +34,10 @@ if __name__ == '__main__':
     # sys.path.append('src/')
     import logging
 
+    #
+    # Here we import the files containing tests for specific classes
+    #
+
     from tests.tests_agent import TestsAgent
     # from tests.tests_helper import TestsHelper
     # from tests.tests_household import TestsHousehold
@@ -45,6 +47,10 @@ if __name__ == '__main__':
     from tests.tests_transaction import TestsTransaction
     # from tests.tests_updater import TestsUpdater
 
+    #
+    # Here we initialise the test classes imported above
+    #
+
     test_agent = TestsAgent()
     # test_helper = TestsHelper()
     # test_household = TestsHousehold()
@@ -53,6 +59,10 @@ if __name__ == '__main__':
     # test_runner = TestsRunner()
     test_transaction = TestsTransaction()
     # test_updater = TestsUpdater()
+
+    #
+    # And finally we run all tests from the specific classes
+    #
 
     # Tests for Bank
     test_agent.agent__get_identifier(["tests/environments/", "test_all_methods", "tests/log/"])

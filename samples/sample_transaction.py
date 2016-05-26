@@ -3,9 +3,9 @@
 # -*- coding: utf-8 -*-
 
 """
-fin_deepening is a multi-agent computational model extending
-the Kitoyaki/Moore financial deeepening theta-phi model.
-Copyright (C) 2015 Pawel Fiedor (Pawel.F.Fiedor@IEEE.org)
+abm_template is a multi-agent simulator template for financial  analysis
+Copyright (C) 2016 Co-Pierre Georg (co-pierre.georg@uct.ac.za)
+Pawel Fiedor (pawel.fiedor@uct.ac.za)
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

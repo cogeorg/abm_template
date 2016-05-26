@@ -7,6 +7,11 @@ Robustness check for Agent-Based Models
 across the whole of the multidimensional
 parameter space.
 
+To run this script you have to specify the
+config file as a parameter, the config
+file has to be in line with the recommendations
+listed in the source code (src/goodness.py)
+
 Author: Pawel Fiedor (pawel@fiedor.eu)
         Co-Pierre Georg (cogeorg@gmail.com)
 

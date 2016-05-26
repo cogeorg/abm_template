@@ -1,14 +1,32 @@
 #!/usr/bin/env python
-# [SublimeLinter pep8-max-line-length:300]
+# [SublimeLinter pep8-max-line-length:150]
 # -*- coding: utf-8 -*-
+
+"""
+abm_template is a multi-agent simulator template for financial  analysis
+Copyright (C) 2016 Co-Pierre Georg (co-pierre.georg@uct.ac.za)
+Pawel Fiedor (pawel.fiedor@uct.ac.za)
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, version 3 of the License.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <http://www.gnu.org/licenses/>.
+"""
 
 import math
 import random
 
 from src.basemodel import BaseModel
 
-from sample.sample_config import Config
-from sample.sample_agent import Agent
+from samples.sample_config import Config
+from samples.sample_agent import Agent
 
 
 class Model(BaseModel):
@@ -43,16 +61,6 @@ class Model(BaseModel):
         """
         super(Model, self).set_model_parameters(_value)
 
-    def get_agents(self):
-        return self.agents
-
-    def set_agents(self, _value):
-        """
-        Class variables: agents
-        Local variables: _agents
-        """
-        super(Model, self).set_agents(_value)
-
     def get_interactions(self):
         return self.interactions
 
@@ -85,6 +93,8 @@ class Model(BaseModel):
         Class variables: agents
         Local variables: parameter_iterator, temp_parameter, agent_iterator, temp_state_variable
         """
+        # This function goes through all parameters and state variables of agents
+        # and makes sure they are all the same for all agents, if not returns False
         for parameter_iterator in self.agents[0].parameters:
             temp_parameter = self.agents[0].parameters[parameter_iterator]
             for agent_iterator in self.agents:
@@ -99,10 +109,10 @@ class Model(BaseModel):
                 temp_state_variable == agent_iterator.state_variables[parameter_iterator]
         return True
 
-
     # TODO this code is fairly general and should be generalized further and then moved to the BaseAgent class
     def check_fixed_point(self, agentA, agentB):
-
+        # This function checks whether we can get a fixed point, ie an equilibrium
+        # within the number of sweeps specified in the config
         actions = [0, 1]
         agentA.parameters['action'] = random.randint(min(actions), max(actions))
         agentB.parameters['action'] = random.randint(min(actions), max(actions))
@@ -127,6 +137,8 @@ class Model(BaseModel):
         self.model_parameters['equilibrium'] = "no"
 
     def get_best_response(self, reaction):
+        # We check which response gives better payout given action of the second agent
+        # And return the optimal response
         if self.payout_from_game(1, reaction) > self.payout_from_game(0, reaction):
             return 1
         else:
@@ -146,6 +158,11 @@ class Model(BaseModel):
             return [agentA.parameters['action'], agentB.parameters['action']]
 
     def payout_from_game(self, action, reaction):
+        # This function is the representation of the payout matrix
+        # You can see the matrix in the README.md file
+        # This function returns the payout for the first agent
+        # So if  we want payouts for both agents we need to call
+        # it twice, second time swapping the parameters
         if action == 1:
             if reaction == 1:
                 return 1-float(self.model_parameters['theta'])

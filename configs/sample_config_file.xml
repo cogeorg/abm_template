@@ -1,6 +1,11 @@
 <config identifier='workhorse_model_config'>
     <!-- parameters specifying the numerical implementation of the economic model -->
     <parameter type='static' name='theta' value='-1.5'></parameter>
+    <parameter type='static' name='num_simulations' value='10000000'></parameter>
     <parameter type='static' name='num_sweeps' value='10000000'></parameter>
     <parameter type='static' name='num_agents' value='2'></parameter>
+    <parameter type='static' name='model_config_file_name' value='configs\sample_config_file.xml'></parameter>
+    <parameter type='static' name='num_sweeps' value='5'></parameter>
+    <parameter type='static' name='measurement_config' value='configs/sample_measurement_config.xml'></parameter>
+    <parameter type='static' name='output_file_name' value='output_test_1.csv'></parameter>
 </config>

@@ -2,7 +2,11 @@
 # -*- coding: utf-8 -*-
 
 """
-Sample
+Sample implementation of the abm_template
+The description of the model implemented
+is presented in the README.md file
+This script needs to be ran with the
+runner config file as parameter.
 
 Author: Pawel Fiedor (pawel@fiedor.eu)
         Co-Pierre Georg (cogeorg@gmail.com)

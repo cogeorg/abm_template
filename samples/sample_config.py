@@ -1,11 +1,11 @@
 #!/usr/bin/env python
-# [SublimeLinter pep8-max-line-length:300]
+# [SublimeLinter pep8-max-line-length:150]
 # -*- coding: utf-8 -*-
 
 """
-fin_deepening is a multi-agent computational model extending
-the Kitoyaki/Moore financial deeepening theta-phi model.
-Copyright (C) 2015 Pawel Fiedor (Pawel.F.Fiedor@IEEE.org)
+abm_template is a multi-agent simulator template for financial  analysis
+Copyright (C) 2016 Co-Pierre Georg (co-pierre.georg@uct.ac.za)
+Pawel Fiedor (pawel.fiedor@uct.ac.za)
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -95,3 +95,24 @@ class Config(BaseConfig):
 
     def accrue_interests(self):
         super(Config, self).accrue_interests()
+
+    assets = {}
+    shocks = []
+
+    def get_assets(self):
+        return self.assets
+
+    def set_assets(self, value):
+        super(Config, self).set_assets(value)
+
+    def get_shocks(self):
+        return self.shocks
+
+    def set_shocks(self, value):
+        super(Config, self).set_shocks(value)
+
+    def add_shock(self, shock):
+        super(Config, self).add_shock(shock)
+
+    def update_asset_returns(self):
+        super(Config, self).update_asset_returns()

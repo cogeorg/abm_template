@@ -3,9 +3,9 @@
 # -*- coding: utf-8 -*-
 
 """
-fin_deepening is a multi-agent computational model extending
-the Kitoyaki/Moore financial deeepening theta-phi model.
-Copyright (C) 2015 Pawel Fiedor (Pawel.F.Fiedor@IEEE.org)
+abm_template is a multi-agent simulator template for financial  analysis
+Copyright (C) 2016 Co-Pierre Georg (co-pierre.georg@uct.ac.za)
+Pawel Fiedor (pawel.fiedor@uct.ac.za)
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -24,8 +24,9 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 # import math
 from src.baserunner import BaseRunner
 
-from sample.sample_config import Config
-from sample.sample_model import Model
+from samples.sample_config import Config
+from samples.sample_model import Model
+from samples.sample_measurement import Measurement
 
 # ============================================================================
 #
@@ -37,7 +38,7 @@ from sample.sample_model import Model
 class Runner(BaseRunner):
 
     identifier = ""
-    num_simulations = 0
+    num_sweeps = 0
 
     def get_identifier(self):
         return self.identifier
@@ -45,15 +46,15 @@ class Runner(BaseRunner):
     def set_identifier(self, _value):
         super(Runner, self).set_identifier(_value)
 
-    def get_num_simulations(self):
-        return self.model_parameters
+    def get_num_sweeps(self):
+        return self.num_sweeps
 
-    def set_num_simulations(self, _value):
-        super(Runner, self).set_num_simulations(_value)
+    def set_num_sweeps(self, _value):
+        super(Runner, self).set_num_sweeps(_value)
 
     def __init__(self, config):
         self.identifier = config.identifier
-        self.num_simulations = int(config.static_parameters['num_simulations'])
+        self.num_sweeps = int(config.static_parameters['num_sweeps'])
 
         self.model_config = Config()
         model_config_file_name = config.get_static_parameters()['model_config_file_name']
@@ -76,11 +77,16 @@ class Runner(BaseRunner):
         out_file.close()
 
     def do_run(self):
-        for i in range(0, self.num_simulations):
+        measurement = Measurement(self.model_config, self)
+        # And open the output file
+        measurement.open_file()
+        for i in range(0, self.num_sweeps):
 
             model = Model(self.model_config)
             model.initialize_agents()
             result = model.do_update()
 
-            self.results.append(result)
-            self.write_results(model)
+            self.results = result
+            # self.write_results(model)
+            measurement.write_to_file()
+        measurement.close_file()
