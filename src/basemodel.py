@@ -124,4 +124,8 @@ class BaseModel(object):
 
     @abc.abstractmethod
     def do_update(self):
+        # This is the main update loop
+        # In concrete implementation the whole updating of the model at each step
+        # Should be called from here, but for larger models this should be done
+        # Through functions to allow it being more easy to read
         pass

@@ -277,11 +277,16 @@ class BaseAgent(object):
     # assumes different types of agents have different names
     # ie bank1 & household1 and not 1 & 1
 
-    #@abc.abstractmethod
-    #def get_best_response(self, opponent_strategy):
-    #    pass
+    # @abc.abstractmethod
+    # def get_best_response(self, opponent_strategy):
+    #     pass
 
     @abc.abstractmethod
+    # This is a very important prototype
+    # Allows us to customize the way Python looks for class variables
+    # Within a given class if standard ways fail
+    # In our examples, this means we specify which containers will Python
+    # Look in if the variable isn't a class/instance variable
     def __getattr__(self, attr):
         if (attr in self.parameters) and (attr in self.state_variables):
             raise AttributeError('The same name exists in both parameters and state variables.')

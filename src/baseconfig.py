@@ -211,6 +211,7 @@ class BaseConfig(object):
         Class variables: identifier, static_parameters, variable_parameters
         Local variables:
         """
+        # This ensures the below are instance variables not class variables
         self.identifier = ""
         self.static_parameters = {}
         self.variable_parameters = {}
@@ -309,6 +310,8 @@ class BaseConfig(object):
 
     @abc.abstractmethod
     def agents_generator(self):
+        # This goes through all agents and yields them one by one
+        # Useful for functions which want to operate on all agents
         if self.agents is not None:
             for agent_type in self.agents:
                 if type(agent_type) == list:
@@ -389,6 +392,11 @@ class BaseConfig(object):
 
     @abc.abstractmethod
     def __getattr__(self, attr):
+        # This is a very important prototype
+        # Allows us to customize the way Python looks for class variables
+        # Within a given class if standard ways fail
+        # In our examples, this means we specify which containers will Python
+        # Look in if the variable isn't a class/instance variable
         if (attr in self.static_parameters) and (attr in self.variable_parameters):
             raise AttributeError('The same name exists in both static and variable parameters.')
         else:
@@ -419,6 +427,9 @@ class BaseConfig(object):
     def update_asset_returns(self):
         from random import gauss
         from math import sqrt
+        # We go through the assets
         for key in self.assets:
+            # And find a current return from a Gaussian distribution based on
+            # mean and st.dev of the asset
             self.assets[key][2] = gauss(self.assets[key][0], sqrt(self.assets[key][1]))
     # a standard method for generating stochastic returns of assets

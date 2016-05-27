@@ -316,5 +316,8 @@ class BaseMeasurement(object):
     # -------------------------------------------------------------------------
     @abc.abstractmethod
     def wrapper(self, ident):
+        # This is a wrapper for calculations of the values to write in the folder
+        # in a concrete implementation this will typically have an array of ifs
+        # checking for the ident, and returning the appropriate value depending on it
         pass
     # -------------------------------------------------------------------------

@@ -113,6 +113,7 @@ class BaseMarket(object):
         Class variables: identifier, tolerance, resolution, amplification
         Local variables:
         """
+        # The below are here so they are instance variables not class variables
         self.identifier = ""
         self.tolerance = 0.0
         self.resolution = 0.0

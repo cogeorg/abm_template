@@ -36,4 +36,9 @@ class BaseShock(object):
 
     @abc.abstractmethod
     def do_shock(self, environment, time, shock_type, step):
+        # This is the wrapper for shocks
+        # The shocks should operate based on the config
+        # thus they work on certain times and have shock types
+        # in concrete implementations there will be an if
+        # statement checking the shock_type and then doing the shock
         pass

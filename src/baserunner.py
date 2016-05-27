@@ -82,4 +82,8 @@ class BaseRunner(object):
 
     @abc.abstractmethod
     def do_run(self):
+        # This is the wrapper for the main run loop
+        # In concrete implementations this will run the updater for each sweep
+        # But also handle measurement class writing
+        # And calling the shocks (through Shock class)
         pass

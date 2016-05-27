@@ -178,17 +178,26 @@ class BaseTransaction(object):
 
     @abc.abstractmethod
     def __del__(self):
+        # we check if the from_ and to variables are agents
         if hasattr(self.from_, "accounts"):  # and hasattr(self.to, "accounts"):
+                # if from_ and to are the same agents we remove it once
                 if self.from_ == self.to:
                     for tranx in self.from_.accounts:
                         if tranx.identifier == self.identifier:
+                            # we remove the transaction from agent's accounts
+                            # this way it is no longer linked in the model in any way
                             self.from_.accounts.remove(tranx)
+                # if we have two separate agents we need to remove twice
                 else:
                     for tranx in self.from_.accounts:
                         if tranx.identifier == self.identifier:
+                            # we remove the transaction from agent's accounts
+                            # this way it is no longer linked in the model in any way
                             self.from_.accounts.remove(tranx)
                     for tranx in self.to.accounts:
                         if tranx.identifier == self.identifier:
+                            # we remove the transaction from agent's accounts
+                            # this way it is no longer linked in the model in any way
                             self.to.accounts.remove(tranx)
     # a standard method for deleting a transaction
     # makes sure to remove it from the appropriate agents' accounts
@@ -196,7 +205,6 @@ class BaseTransaction(object):
     @abc.abstractmethod
     def this_transaction(self, type_, asset, from_, to, amount, interest, maturity, time_of_default):
         self.type_ = type_
-        # if transactionType == "I":
         self.asset = asset
         # the convention used is that amounts are positive
         if amount >= 0:
@@ -256,11 +264,18 @@ class BaseTransaction(object):
 
     @abc.abstractmethod
     def add_transaction(self, environment):
+        # We attempt to add the transaction to the agents to which it belongs to
+        # First we check whether from_ is a string, if it is we need to find the
+        # actual agent object and link it to from_
         if isinstance(self.from_, str):
             self.from_ = environment.get_agent_by_id(self.from_)
+        # We do the same thing with to agent
         if isinstance(self.to, str):
             self.to = environment.get_agent_by_id(self.to)
+        # Then we check if both agents have accounts (ie are actual agents)
+        # instead of something diffeerent than string but unrelated
         if hasattr(self.from_, "accounts") and hasattr(self.to, "accounts"):
+            # And apend the from_ and to_ to accounts of the appropriate agents
             if self.from_ == self.to:
                 self.from_.accounts.append(self)
             else:
@@ -272,12 +287,18 @@ class BaseTransaction(object):
 
     @abc.abstractmethod
     def remove_transaction(self):
+        # We check if the from_ field consists of an actual agent
         if hasattr(self.from_, "accounts"):  # and hasattr(self.to, "accounts"):
+                # If we have one agent for from_ and to
                 if self.from_ == self.to:
+                    # We find the appropriate transaction
                     for tranx in self.from_.accounts:
                         if tranx.identifier == self.identifier:
+                            # And remove it
                             self.from_.accounts.remove(tranx)
+                # If we have separate agents for from_ and to
                 else:
+                    # Works as above
                     for tranx in self.from_.accounts:
                         if tranx.identifier == self.identifier:
                             self.from_.accounts.remove(tranx)
@@ -289,6 +310,7 @@ class BaseTransaction(object):
 
     @abc.abstractmethod
     def clear_accounts(self, agent):
+        # This removes all transactions of the agent from its books
         while len(agent.accounts) > 0:
             agent.accounts[0].remove_transaction()
     # a standard function which clears the accounts of a given agent
@@ -296,6 +318,7 @@ class BaseTransaction(object):
 
     @abc.abstractmethod
     def purge_accounts(self, environment):
+        # This removes all transactions with amount 0
         for agent in environment.agents_generator():
             new_accounts = []
             for transaction in agent.accounts:
