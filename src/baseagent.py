@@ -299,3 +299,10 @@ class BaseAgent(object):
                 except:
                     raise AttributeError('Agent %s has no attribute "%s".' % self.identifier, attr)
     # a standard method for retrieving items from dictionaries as class attributes
+
+    @abc.abstractmethod
+    def update_maturity(self):
+        for tranx in self.accounts:
+            if (int(tranx.maturity) > 0):  # reduce maturity if duration longer than 0
+                tranx.maturity = int(tranx.maturity) - 1
+    # a standard method for handling maturities at the beginning of a sweep
