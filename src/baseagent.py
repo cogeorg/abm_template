@@ -235,6 +235,18 @@ class BaseAgent(object):
                 # add them to parameter list
                 self.parameters[name] = float(value)
 
+            xmlText = open(_filename).read()
+            element = ElementTree.XML(xmlText)
+            # and then we're only interested in <parameter> fields
+            element = element.findall('variable')
+
+            # loop over all <parameter> entries in the xml file
+            for subelement in element:
+                name = subelement.attrib['name']
+                value = subelement.attrib['value']
+                # add them to parameter list
+                self.state_variables[name] = float(value)
+
         except:
             logging.error("    ERROR: %s could not be parsed",  _filename)
     # a standard function reading parameters of the agents from
