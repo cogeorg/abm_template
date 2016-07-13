@@ -21,7 +21,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 """
 
 
-__author__ = """Paweł Fiedor (pawel.fiedor@uct.ac.za)"""
+__author__ = """Pawel Fiedor (pawel.fiedor@uct.ac.za)"""
 
 import abc
 import logging
