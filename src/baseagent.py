@@ -185,9 +185,9 @@ class BaseAgent(object):
     # of a given type held by the agent
 
     @abc.abstractmethod
-    def clear_accounts(self):
+    def clear_accounts(self, environment):
         while len(self.accounts) > 0:
-                self.accounts[0].remove_transaction()
+                self.accounts[0].remove_transaction(environment)
     # a standard function deleting all transactions of the agent
 
     @abc.abstractmethod

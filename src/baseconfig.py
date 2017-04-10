@@ -418,7 +418,7 @@ class BaseConfig(object):
             for tranx in agent.accounts:  # Iterate over all transactions
                 if tranx.identifier not in done_list:  # If not amended previously
                     # The below adds the interest on the principal amount
-                    tranx.amount = tranx.amount + tranx.amount * tranx.interest
+                    tranx.set_amount(tranx.amount + tranx.amount * tranx.interest, self)
                     # The below makes sure that we don't double count
                     done_list.append(tranx.identifier)
     # a standard method for accruing interest on all transactions
